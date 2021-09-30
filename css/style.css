@@ -1,6 +1,7 @@
 body{
     background-color: #0e5b50;
     overflow: hidden;
+    font-family: sans-serif;
 }
 .form{
     position: absolute;
@@ -10,34 +11,45 @@ body{
 .form-item, .form-input input, .form-title{
     display: block;
     margin: 15px;
+    margin-left: 0;
+    margin-top: 0;
     color: white;
     position: relative;
 }
 .form-title{
-    font-size: 24px;
+    font-size: 20px;
 }
 .form-item{
     width: 100%;
     margin-left: 132px;
     margin-bottom: 60%;
+    display: flex;
 }
 .form-button{
     background: #f9f9f9;
-    color: black;
-    width: 80px;
-    height: 40px;
+    width: 68px;
+    height: 35px;
     display: block;
     text-align: center;
-    padding-top: 8px;
-    border-radius: 5px;
+    padding-top: 6px;
+    border-radius: 3px;
+    font-weight: bolder;
+    color: #929292;
 }
-.form-button:hover{
+.form-button:active, .form-button:hover{
     cursor: pointer;
-    background: #d3d3d3;
-
 }
-.current{
-    display: block;
+.form-button:active{
+    transition: all 500ms;
+    background: #d3d3d3;
+}
+.form-numbering-arrow{
+    margin-top: 10.2px;
+    margin-right: 13px;;
+}
+.form-numbering{
+    margin-top: 3px;
+    margin-right: 2px;
 }
 .footer{
     position: absolute;
@@ -45,24 +57,45 @@ body{
     right: 20px;
     background: #f9f9f9;
     display: flex;
-    width: 72px;
-    height: 34px;
-    border-radius: 5px;
+    width: 60px;
+    height: 25px;
+    border-radius: 3px;
 
 }
 .footer-item{
     margin: 0 auto;
 }
 .footer-arrow{
-    padding: 0 9px;
+    line-height: 25px !important;
     color: #7a7a7a;
-    font-weight: 900;
+    flex-grow: 1;
+    text-align: center;
+    font-weight: bolder !important;
 
+}
+.footer-arrow:first-child{
+    border-right:  #c1c1c1 0.5px solid;
 }
 .footer-arrow:hover{
     cursor: pointer;
 }
+.footer-arrow:active{
+    background: #d3d3d3;
+    transition: all 500ms;
+    cursor: pointer;
+
+}
+.footer-arrow:first-child:active{
+    border-radius: 3px 0 0 3px;
+}
+.footer-arrow:last-child:active{
+    border-radius: 0 3px 3px 0;
+}
 .footer-arrow-separator{
     font-size: 20px;
     color: #e2dfda;
+}
+.fa-arrow-right{
+    font-size: 10px !important;
+
 }
