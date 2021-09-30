@@ -97,5 +97,18 @@ body{
 }
 .fa-arrow-right{
     font-size: 10px !important;
-
+}
+.bar{
+    min-height: 3.5px;
+    background-color: #558b83;
+    height: 3.5px;
+}
+.container-fluid{
+    padding: 0;
+}
+.bar-filled{
+    height: 100%;
+    width: 0%;
+    background-color: white;
+    transition: all 500ms ease-out;
 }

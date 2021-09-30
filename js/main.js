@@ -5,13 +5,14 @@ function Form(maxCount){
     this.speed = 350,
     this.init = function(){
         $('.form-item').css('opacity', '0%');
-        $('.form-item').eq(0).css('opacity', '100%');
+        $('.form-item').eq(0).css('top', '400px');
+        this.showUp();
     };
     this.showUp = function(){
         $('.form-item').eq(this.counter).show().animate({
             top: '0px',
             opacity: '100%',
-        }, this.speed, 'swing');
+        }, this.speed);
     };
     this.hideUp = function(){
         $('.form-item').eq(this.counter).animate({
@@ -82,6 +83,10 @@ $(document).ready(function(){
             }
             e.preventDefault();
         }
-      });
+    });
+    $(document).click(function(){
+        var prog = (100/typeForm.maxCount)*typeForm.counter;
+        $('.bar-filled').css('width', prog.toString()+'%');
+    });
 });
 
