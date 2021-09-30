@@ -25,6 +25,12 @@ body{
     margin-bottom: 60%;
     display: flex;
 }
+.form-element{
+    margin-bottom: 10px;
+    border: solid 0.5px #d8d8d8;
+    border-radius: 2px;
+    background-color: #376d62;
+}
 .form-button{
     background: #f9f9f9;
     width: 68px;
@@ -48,8 +54,57 @@ body{
     margin-right: 13px;;
 }
 .form-numbering{
-    margin-top: 3px;
-    margin-right: 2px;
+    margin-top: 5px;
+    margin-right: 5px;
+    font-size: 13px;
+}
+.form-element{
+    height: 29px;
+    display: flex;
+}
+.form-element:hover{
+    cursor: pointer;
+    background-color: #578d85;
+}
+.form-element-key{
+    border: solid 0.5px rgb(167, 167, 167);
+    font-weight: 900;
+    font-size: 9px;
+    padding: 1px 5px;
+    margin: auto 0;
+    margin-left: 5px;
+    background-color: #2e5c50;
+    visibility: hidden;
+    border-radius: 2px;
+}
+.form-element:hover .form-element-key{
+    left: -26px;
+    visibility: visible;    
+    position: relative;
+    border-right: none;
+}
+.form-element:hover .form-element-label{
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-element-label{
+    border: solid 0.5px rgb(167, 167, 167);
+    font-weight: 900;
+    font-size: 9px;
+    padding: 1px 5px;
+    margin: auto 0;
+    margin-left: 5px;
+    background-color: #2e5c50;
+    border-radius: 2px;
+    left: -33px;
+    position: relative;
+}
+
+.form-element-text{
+    margin: auto;
+    width: 100%;
+    margin-left: -26px;
 }
 .footer{
     position: absolute;
