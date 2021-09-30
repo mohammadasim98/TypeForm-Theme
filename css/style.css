@@ -1,5 +1,6 @@
 body{
     background-color: #0e5b50;
+    overflow: hidden;
 }
 .form{
     position: absolute;
@@ -10,6 +11,7 @@ body{
     display: block;
     margin: 15px;
     color: white;
+    position: relative;
 }
 .form-title{
     font-size: 24px;
@@ -17,4 +19,50 @@ body{
 .form-item{
     width: 100%;
     margin-left: 132px;
+    margin-bottom: 60%;
+}
+.form-button{
+    background: #f9f9f9;
+    color: black;
+    width: 80px;
+    height: 40px;
+    display: block;
+    text-align: center;
+    padding-top: 8px;
+    border-radius: 5px;
+}
+.form-button:hover{
+    cursor: pointer;
+    background: #d3d3d3;
+
+}
+.current{
+    display: block;
+}
+.footer{
+    position: absolute;
+    bottom: 14px;
+    right: 20px;
+    background: #f9f9f9;
+    display: flex;
+    width: 72px;
+    height: 34px;
+    border-radius: 5px;
+
+}
+.footer-item{
+    margin: 0 auto;
+}
+.footer-arrow{
+    padding: 0 9px;
+    color: #7a7a7a;
+    font-weight: 900;
+
+}
+.footer-arrow:hover{
+    cursor: pointer;
+}
+.footer-arrow-separator{
+    font-size: 20px;
+    color: #e2dfda;
 }
