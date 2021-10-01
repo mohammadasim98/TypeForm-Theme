@@ -4,11 +4,15 @@ body{
     font-family: sans-serif;
 }
 .form{
-    position: absolute;
+    position: relative;
     top: 21%;
-    width: 54%;
+    width: 70%;
+    margin: auto;
 }
-.form-item, .form-input input, .form-title{
+.form-input-radio{
+    width: fit-content;
+}
+.form-item, .form-input-radio input, .form-title{
     display: block;
     margin: 15px;
     margin-left: 0;
@@ -17,30 +21,44 @@ body{
     position: relative;
 }
 .form-title{
-    font-size: 20px;
+    font-size: 25px;
 }
 .form-item{
     width: 100%;
-    margin-left: 132px;
-    margin-bottom: 60%;
     display: flex;
+    margin: auto;
+    margin-top: 25vh;
+    margin-bottom: 60%;
+    position: relative;
+
 }
-.form-element{
+.form-input-radio .form-element{
     margin-bottom: 10px;
     border: solid 0.5px #d8d8d8;
-    border-radius: 2px;
+    border-radius: 4px;
     background-color: #376d62;
+    height: 37px;
+    display: flex;
+    padding-right: 13px;
+    min-width: 166px;
+
 }
 .form-button{
     background: #f9f9f9;
-    width: 68px;
+    width: fit-content;
     height: 35px;
-    display: block;
+    display: inline-block;
     text-align: center;
+    padding: 0 13px;    
     padding-top: 6px;
     border-radius: 3px;
     font-weight: bolder;
-    color: #929292;
+    color: #7a7a7a;
+}
+.form-button-enter{
+    display: inline-block;
+    margin-left: 14px;
+    font-size: 9.5px;
 }
 .form-button:active, .form-button:hover{
     cursor: pointer;
@@ -50,49 +68,63 @@ body{
     background: #d3d3d3;
 }
 .form-numbering-arrow{
-    margin-top: 10.2px;
+    margin-top: 12.5px;
     margin-right: 13px;;
 }
 .form-numbering{
-    margin-top: 5px;
+    margin-top: 8px;
     margin-right: 5px;
-    font-size: 13px;
+    font-size: 14px;
 }
-.form-element{
-    height: 29px;
-    display: flex;
-}
-.form-element:hover{
+
+.form-input-radio .form-element:hover{
     cursor: pointer;
     background-color: #578d85;
 }
-.form-element-key{
+.form-input-radio .form-element-key{
     border: solid 0.5px rgb(167, 167, 167);
-    font-weight: 900;
-    font-size: 9px;
-    padding: 1px 5px;
+    font-weight: 100;
+    font-size: 12px;
+    padding: 2px 5px;
     margin: auto 0;
     margin-left: 5px;
     background-color: #2e5c50;
     visibility: hidden;
     border-radius: 2px;
-}
-.form-element:hover .form-element-key{
     left: -26px;
-    visibility: visible;    
     position: relative;
+}
+.form-input-radio .form-element:hover .form-element-key{
+    visibility: visible;    
     border-right: none;
 }
-.form-element:hover .form-element-label{
+.form-input-radio .form-element:hover .form-element-label{
     border-left: none;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
+.form-input-text .form-element{
+    background-color: #2e5c50;
+    border: none;
+    border-bottom: 0.5px solid #618c85;
+    margin-top:15px;
+    margin-bottom: 24px;
+    min-width: 100%;
+    height: 43px;
+    font-size: 25px;
+    color: white;
+}
+.form-input-text .form-element:focus{
+    outline-width: 0;
+    caret-color: white;
+    border-bottom: 2px solid #f9f9f9;
+
+}
 .form-element-label{
     border: solid 0.5px rgb(167, 167, 167);
     font-weight: 900;
-    font-size: 9px;
-    padding: 1px 5px;
+    font-size: 12px;
+    padding: 2px 7px;
     margin: auto 0;
     margin-left: 5px;
     background-color: #2e5c50;
@@ -105,7 +137,15 @@ body{
     margin: auto;
     width: 100%;
     margin-left: -26px;
+    min-width: 70px;
 }
+.form-element-tick{
+    position: relative;
+    margin: auto;
+    padding-left: 10px;
+
+}
+
 .footer{
     position: absolute;
     bottom: 14px;
