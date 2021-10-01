@@ -4,6 +4,7 @@ function Form(maxCount){
     this.counter = 0,
     this.speed = 350,
     this.init = function(){
+        
         $('.form-item').css('opacity', '0%');
         $('.form-item').eq(0).css('top', '400px');
         for(i=1; i<=this.maxCount; i++){
@@ -35,6 +36,7 @@ function Form(maxCount){
             top: '0px',
             opacity: '100%',
         }, this.speed);
+
     };
     this.hideUp = function(){
         $('.form-item').eq(this.counter).animate({
@@ -63,6 +65,54 @@ $(document).ready(function(){
     var formItem = $('.form-item');
     typeForm = new Form(formItem.length);
     typeForm.init();
+    document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchmove', handleTouchMove, false);
+
+var xDown = null;                                                        
+var yDown = null;
+
+function getTouches(evt){
+  return evt.touches ||             // browser API
+         evt.originalEvent.touches; // jQuery
+}                                                     
+                                                                         
+function handleTouchStart(evt){
+    const firstTouch = getTouches(evt)[0];                                      
+    xDown = firstTouch.clientX;                                      
+    yDown = firstTouch.clientY;                                      
+};                                                
+                                                                         
+function handleTouchMove(evt){
+    if(!xDown||!yDown){
+        return;
+    }
+
+    var xUp = evt.touches[0].clientX;                                    
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+                                                                         
+    if(Math.abs(xDiff) <= Math.abs(yDiff)){
+        if ( yDiff <= 0 ) {
+            if(typeForm.counter != 0){
+                typeForm.hideDown(typeForm.counter);
+                typeForm.counter -= 1;
+                typeForm.showDown(typeForm.counter);
+            }
+        } else { 
+            if(typeForm.counter < typeForm.maxCount-1){
+                typeForm.hideUp(typeForm.counter);
+                typeForm.counter += 1;
+                typeForm.showUp(typeForm.counter);
+            }
+        } 
+        var prog = (100/typeForm.maxCount)*typeForm.counter;
+        $('.bar-filled').css('width', prog.toString()+'%');                                                                
+    }
+    xDown = null;
+    yDown = null;                                             
+};
     $('.form-button').click(function(e){
         if(typeForm.counter < typeForm.maxCount-1){
             typeForm.hideUp(typeForm.counter);
@@ -114,10 +164,11 @@ $(document).ready(function(){
         $('.bar-filled').css('width', prog.toString()+'%');
     });
     $('.form-input-radio .form-element').click(function(){
-        $('.form-element-label, .form-element-key').css('background-color', '');
-        $('.form-element-label, .form-element-key').css('color', '');
-        $('.form-element-label, .form-element-key').css('border', '');
-        $('.form-input-radio .form-element').css('border', '');
+        $(this).parent().find('.form-element-label, .form-element-key').css('background-color', '');
+        $(this).parent().find('.form-element-label, .form-element-key').css('color', '');
+        $(this).parent().find('.form-element-label, .form-element-key').css('border', '');
+        $(this).parent().find('.form-element').css('border', '');
+
         $(this).parent().find('.form-element-tick').css('visibility', 'hidden');
         $(this).find('.form-element-tick').css('visibility', 'visible');
         $(this).find('.form-element-label, .form-element-key').css('background-color', 'white');

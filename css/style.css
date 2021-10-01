@@ -21,20 +21,25 @@ body{
     position: relative;
 }
 .form-title{
-    font-size: 25px;
+    font-size: 138%;
+    width: 100%;
+
 }
 .form-item{
-    width: 100%;
+    width: 107%;
     display: flex;
     margin: auto;
     margin-top: 25vh;
-    margin-bottom: 60%;
+    margin-left: -36px;
+    margin-bottom: 48vh;
     position: relative;
 
+
 }
+
 .form-input-radio .form-element{
     margin-bottom: 10px;
-    border: solid 0.5px #d8d8d8;
+    border: solid 0.5px #a9c4c0;
     border-radius: 4px;
     background-color: #376d62;
     height: 37px;
@@ -68,11 +73,11 @@ body{
     background: #d3d3d3;
 }
 .form-numbering-arrow{
-    margin-top: 12.5px;
+    margin-top: 10.5px;
     margin-right: 13px;;
 }
 .form-numbering{
-    margin-top: 8px;
+    margin-top: 7px;
     margin-right: 5px;
     font-size: 14px;
 }
@@ -81,8 +86,8 @@ body{
     cursor: pointer;
     background-color: #578d85;
 }
-.form-input-radio .form-element-key{
-    border: solid 0.5px rgb(167, 167, 167);
+.form-element-key{
+    border: solid 0.5px #9fbdba;
     font-weight: 100;
     font-size: 12px;
     padding: 2px 5px;
@@ -111,17 +116,32 @@ body{
     margin-bottom: 24px;
     min-width: 100%;
     height: 43px;
-    font-size: 25px;
+    font-size: 100%;
     color: white;
+    
+}
+@-moz-document url-prefix(){
+    .form-input-text .form-element{
+        background-color: #2e5c50;
+        border: none;
+        border-bottom: 0.5px solid #618c85;
+        margin-top:15px;
+        margin-bottom: 24px;
+        width: 100%;
+        height: 43px;
+        font-size: 1vw;
+        color: white;
+    }
 }
 .form-input-text .form-element:focus{
     outline-width: 0;
     caret-color: white;
     border-bottom: 2px solid #f9f9f9;
+    
 
 }
 .form-element-label{
-    border: solid 0.5px rgb(167, 167, 167);
+    border: solid 0.5px #9fbdba;
     font-weight: 900;
     font-size: 12px;
     padding: 2px 7px;
@@ -135,9 +155,10 @@ body{
 
 .form-element-text{
     margin: auto;
-    width: 100%;
+    width: 120%;
     margin-left: -26px;
     min-width: 70px;
+    
 }
 .form-element-tick{
     position: relative;
@@ -206,4 +227,39 @@ body{
     width: 0%;
     background-color: white;
     transition: all 500ms ease-out;
+}
+@media screen and (min-width: 320px){
+    .form-item{
+        width: 117%;
+    }
+}
+@media screen and (min-width: 375px){
+    .form-item{
+        width: 114%;
+    }
+}
+@media screen and (min-width: 425px){
+    .form-item{
+        width: 112.5%;
+    }
+}
+@media screen and (min-width: 768px){
+    .form-item{
+        width: 107.5%;
+    }
+}
+@media screen and (min-width: 1024px){
+    .form-item{
+        width: 105.5%;
+    }
+}
+@media screen and (min-width: 1440px){
+    .form-item{
+        width: 104%;
+    }
+}
+@media screen and (min-width: 2560px){
+    .form-item{
+        width: 104%;
+    }
 }
