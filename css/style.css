@@ -56,7 +56,6 @@ body{
 
 
 }
-
 .form-input-radio .form-element{
     margin-bottom: 10px;
     border: solid 0.5px var(--radio-element-border-color);
@@ -140,6 +139,16 @@ body{
     color: var(--text-color);
     
 }
+
+.form-input-text .form-element:-webkit-autofill,
+.form-input-text .form-element:-webkit-autofill:hover,
+.form-input-text .form-element:-webkit-autofill:focus, 
+.form-input-text .form-element:-webkit-autofill:active{
+    -webkit-text-fill-color: var(--text-color);
+    -webkit-box-shadow: 0 0 0px 1000px var(--bg-color) inset;
+    box-shadow: 0 0 0px 1000px var(--bg-color) inset;
+}
+
 @-moz-document url-prefix(){
     .form-input-text .form-element:focus {
         outline: none;

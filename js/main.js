@@ -16,6 +16,7 @@ function Form(){
     this.blinkAmount = 2;
     this.minBlinkOpacity = 0.2;
     this.maxBlinkOpacity = 1;
+    this.progCount = 0;
     this.init = function(){
         self.addElements();
         self.bindEvents();
@@ -44,6 +45,16 @@ function Form(){
             top: '+200px',
             opacity: '0%',
         }, self.speed, 'swing').hide(self.speed);
+    };
+    this.updateProgbar = function(){
+        for(i=0; i<$('.form-item').find('input').length; i++){
+            if($('.form-item').find('input').eq(i).val()){
+                self.progCount += 1;
+            }
+        }
+        var prog = (100/self.maxCount)*self.progCount;
+        $('.bar-filled').css('width', prog.toString()+'%');
+        self.progCount = 0;  
     };
     this.getTouches = function(e){
         return e.touches || e.originalEvent.touches;
@@ -75,8 +86,7 @@ function Form(){
                     self.showUp(self.counter);
                 }
             } 
-            var prog = (100/self.maxCount)*self.counter;
-            $('.bar-filled').css('width', prog.toString()+'%');                                                                
+            self.updateProgbar();                                                               
         }
         self.xDown = null;
         self.yDown = null;                                             
@@ -101,7 +111,7 @@ function Form(){
                     $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 }
             }else{
-                $('.form-item').eq(i).find('.form-content').append('<span class="form-button">Submit</i> </span>');
+                $('.form-item').eq(i).find('.form-content').append('<span class="form-button form-submit">Submit</i> </span>');
             }   
         }
         $('.form-element-tick').css('visibility', 'hidden');
@@ -149,39 +159,55 @@ function Form(){
                     self.showDown(self.counter);
                 }
             }
-            var prog = (100/self.maxCount)*self.counter;
-            $('.bar-filled').css('width', prog.toString()+'%');
+            self.updateProgbar();
         });
         $(document).click(function(){
-            var prog = (100/self.maxCount)*self.counter;
-            $('.bar-filled').css('width', prog.toString()+'%');
+            self.updateProgbar();
         });
         $('.form-input-radio .form-element').click(function(){
-            $(this).parent().find('.form-element-label, .form-element-key').css('background-color', '');
-            $(this).parent().find('.form-element-label, .form-element-key').css('color', '');
-            $(this).parent().find('.form-element-label, .form-element-key').css('border', '');
-            $(this).parent().find('.form-element').css('border', '');
-            $(this).parent().find('.form-element-tick').css('visibility', 'hidden');
-            $(this).find('.form-element-tick').css('visibility', 'visible');
-            $(this).find('.form-element-label, .form-element-key').css('background-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-bg-active-color'));
-            $(this).find('.form-element-label, .form-element-key').css('color', getComputedStyle(document.documentElement).getPropertyValue('--bg-color'));
-            $(this).find('.form-element-label, .form-element-key').css('border-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-border-active-color'));
-            for(i=0;i<self.blinkAmount;i++) {
-                $(this).fadeTo(self.blinkSpeed, self.minBlinkOpacity).fadeTo(self.blinkSpeed, self.maxBlinkOpacity);
+            if($(this).find('.form-element-tick').css('visibility')=='visible'){
+                $(this).parent().find('.hidden-radio').val('');
+                $(this).find('.form-element-label, .form-element-key').css('background-color', '');
+                $(this).find('.form-element-label, .form-element-key').css('color', '');
+                $(this).find('.form-element-label, .form-element-key').css('border', '');
+                $(this).find('.form-element').css('border', '');
+                $(this).find('.form-element-tick').css('visibility', 'hidden');   
+                $(this).css('border', '');    
+            }else{
+                $(this).parent().find('.hidden-radio').val($(this).find('.form-element-text').text());
+                $(this).parent().find('.form-element-label, .form-element-key').css('background-color', '');
+                $(this).parent().find('.form-element-label, .form-element-key').css('color', '');
+                $(this).parent().find('.form-element-label, .form-element-key').css('border', '');
+                $(this).parent().find('.form-element').css('border', '');
+                $(this).parent().find('.form-element-tick').css('visibility', 'hidden');
+                $(this).find('.form-element-tick').css('visibility', 'visible');
+                $(this).find('.form-element-label, .form-element-key').css('background-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-bg-active-color'));
+                $(this).find('.form-element-label, .form-element-key').css('color', getComputedStyle(document.documentElement).getPropertyValue('--bg-color'));
+                $(this).find('.form-element-label, .form-element-key').css('border-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-border-active-color'));
+                for(i=0;i<self.blinkAmount;i++) {
+                    $(this).fadeTo(self.blinkSpeed, self.minBlinkOpacity).fadeTo(self.blinkSpeed, self.maxBlinkOpacity);
+                }
+                $(this).css('border', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-border-active-color') + ' 2px solid');    
+                setTimeout(function(){
+                    $(".footer-arrow-down").click();
+                },self.autoNextDelay);   
             }
-            $(this).css('border', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-border-active-color') + ' 2px solid');    
-            setTimeout(function(){
-                $(".footer-arrow-down").click();
-            },self.autoNextDelay);   
+            self.updateProgbar();
         });
         $('.form-input-text .form-element').keyup(function(e){
+            self.updateProgbar();
             if(e.keyCode == 13){
                 e.preventDefault();
                 $(".footer-arrow-down").click();
             }
         });
         $('.form').submit(function(e){
-            e.preventDefault();
+            if(self.counter < self.maxCount-1){
+                e.preventDefault();
+            }
+        });
+        $('.form-submit').click(function(){
+            $('.form').submit();
         }); 
     };
 }
