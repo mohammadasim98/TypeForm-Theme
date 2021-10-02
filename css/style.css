@@ -1,5 +1,24 @@
+:root{
+    --bg-color: #0e5b50;
+    --text-color: #ffffff;
+    --prog-bar-color: #558b83;
+    --prog-bar-filled-color: #ffffff;
+    --radio-element-bg-color: #276c62;
+    --radio-element-border-color: #a9c4c0;
+    --radio-element-bg-hover-color: #578d85;
+    --radio-element-bg-active-color: #ffffff;
+    --radio-element-key-label-bg-color: #0e5b50;
+    --radio-element-key-label-bg-active-color: #ffffff;
+    --radio-element-key-label-border-color: #9fbdba;
+    --form-button-bg-color: #f9f9f9;
+    --form-button-text-color: #7a7a7a;
+    --form-button-bg-active-color: #d3d3d3;
+    --form-button-arrow-middle-border: #c1c1c1;
+    --text-element-border-color: #618c85;
+    --text-element-border-focus-color: #f9f9f9;
+}
 body{
-    background-color: #2e5c50;
+    background-color: var(--bg-color);
     overflow: hidden;
     font-family: sans-serif;
 }
@@ -17,7 +36,7 @@ body{
     margin: 15px;
     margin-left: 0;
     margin-top: 0;
-    color: white;
+    color: var(--text-color);
     position: relative;
 }
 .form-title{
@@ -39,9 +58,9 @@ body{
 
 .form-input-radio .form-element{
     margin-bottom: 10px;
-    border: solid 0.5px #a9c4c0;
+    border: solid 0.5px var(--radio-element-border-color);
     border-radius: 4px;
-    background-color: #376d62;
+    background-color: var(--radio-element-bg-color);
     height: 37px;
     display: flex;
     padding-right: 13px;
@@ -49,16 +68,16 @@ body{
 
 }
 .form-button{
-    background: #f9f9f9;
+    background: var(--form-button-bg-color);
     width: fit-content;
-    height: 35px;
+    height: fit-content;
     display: inline-block;
     text-align: center;
-    padding: 0 13px;    
-    padding-top: 6px;
+    padding: 7px 16px;
     border-radius: 3px;
     font-weight: bolder;
-    color: #7a7a7a;
+    color: var(--form-button-text-color);
+    font-size: 19px;
 }
 .form-button-enter{
     display: inline-block;
@@ -70,7 +89,7 @@ body{
 }
 .form-button:active{
     transition: all 500ms;
-    background: #d3d3d3;
+    background: var(--form-button-bg-active-color);
 }
 .form-numbering-arrow{
     margin-top: 10.5px;
@@ -84,16 +103,16 @@ body{
 
 .form-input-radio .form-element:hover{
     cursor: pointer;
-    background-color: #578d85;
+    background-color: var(--radio-element-bg-hover-color);
 }
 .form-element-key{
-    border: solid 0.5px #9fbdba;
+    border: solid 0.5px var(--radio-element-key-label-border-color);
     font-weight: 100;
     font-size: 12px;
     padding: 2px 5px;
     margin: auto 0;
     margin-left: 5px;
-    background-color: #2e5c50;
+    background-color: var(--radio-element-key-label-bg-color);
     visibility: hidden;
     border-radius: 2px;
     left: -26px;
@@ -109,45 +128,37 @@ body{
     border-bottom-left-radius: 0;
 }
 .form-input-text .form-element{
-    background-color: #2e5c50;
+    background-color: var(--bg-color);
     border: none;
-    border-bottom: 0.5px solid #618c85;
+    border-bottom: 0.5px solid var(--text-element-border-color);
     margin-top:15px;
     margin-bottom: 24px;
     min-width: 100%;
     height: 43px;
     font-size: 167%;
-    color: white;
+    color: var(--text-color);
     
 }
 @-moz-document url-prefix(){
-    .form-input-text .form-element{
-        background-color: #2e5c50;
-        border: none;
-        border-bottom: 0.5px solid #618c85;
-        margin-top:15px;
-        margin-bottom: 24px;
-        width: 100%;
-        height: 43px;
-        font-size: 1vw;
-        color: white;
+    .form-input-text .form-element:focus {
+        outline: none;
     }
 }
 .form-input-text .form-element:focus{
     outline-width: 0;
-    caret-color: white;
-    border-bottom: 2px solid #f9f9f9;
+    caret-color: var(--text-color);
+    border-bottom: 2px solid var(--text-element-border-focus-color);
     
 
 }
 .form-element-label{
-    border: solid 0.5px #9fbdba;
+    border: solid 0.5px var(--radio-element-key-label-border-color);
     font-weight: 900;
     font-size: 12px;
     padding: 2px 7px;
     margin: auto 0;
     margin-left: 5px;
-    background-color: #2e5c50;
+    background-color: var(--radio-element-key-label-bg-color);
     border-radius: 2px;
     left: -33px;
     position: relative;
@@ -171,7 +182,7 @@ body{
     position: absolute;
     bottom: 14px;
     right: 20px;
-    background: #f9f9f9;
+    background: var(--form-button-bg-color);
     display: flex;
     width: 60px;
     height: 25px;
@@ -183,20 +194,20 @@ body{
 }
 .footer-arrow{
     line-height: 25px !important;
-    color: #7a7a7a;
+    color: var(--form-button-text-color);
     flex-grow: 1;
     text-align: center;
     font-weight: bolder !important;
 
 }
 .footer-arrow:first-child{
-    border-right:  #c1c1c1 0.5px solid;
+    border-right:  var(--form-button-arrow-middle-border) 0.5px solid;
 }
 .footer-arrow:hover{
     cursor: pointer;
 }
 .footer-arrow:active{
-    background: #d3d3d3;
+    background: var(--form-button-bg-active-color);
     transition: all 500ms;
     cursor: pointer;
 
@@ -207,16 +218,12 @@ body{
 .footer-arrow:last-child:active{
     border-radius: 0 3px 3px 0;
 }
-.footer-arrow-separator{
-    font-size: 20px;
-    color: #e2dfda;
-}
 .fa-arrow-right{
     font-size: 10px !important;
 }
 .bar{
     min-height: 3.5px;
-    background-color: #558b83;
+    background-color: var(--prog-bar-color);
     height: 3.5px;
 }
 .container-fluid{
@@ -225,12 +232,20 @@ body{
 .bar-filled{
     height: 100%;
     width: 0%;
-    background-color: white;
+    background-color: var(--prog-bar-filled-color);
     transition: all 500ms ease-out;
 }
-@media screen and (min-width: 320px){
+@media screen and (max-width: 569px){
+    .form-input-text .form-element{
+        font-size: 100%;
+    }
+}
+@media screen and (max-width: 365px){
     .form-item{
         width: 117%;
+    }
+    .form-input-text .form-element{
+        font-size: 85%;
     }
 }
 @media screen and (min-width: 375px){

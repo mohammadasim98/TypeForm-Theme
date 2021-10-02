@@ -23,7 +23,6 @@ function Form(){
             top: '0px',
             opacity: '100%',
         }, self.speed);
-
     };
     this.hideUp = function(){
         $('.form-item').eq(self.counter).animate({
@@ -161,13 +160,13 @@ function Form(){
             $(this).parent().find('.form-element').css('border', '');
             $(this).parent().find('.form-element-tick').css('visibility', 'hidden');
             $(this).find('.form-element-tick').css('visibility', 'visible');
-            $(this).find('.form-element-label, .form-element-key').css('background-color', 'white');
-            $(this).find('.form-element-label, .form-element-key').css('color', '#2e5c50');
-            $(this).find('.form-element-label, .form-element-key').css('border-color', 'white');
+            $(this).find('.form-element-label, .form-element-key').css('background-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-bg-active-color'));
+            $(this).find('.form-element-label, .form-element-key').css('color', getComputedStyle(document.documentElement).getPropertyValue('--bg-color'));
+            $(this).find('.form-element-label, .form-element-key').css('border-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-bg-active-color'));
             for(i=0;i<2;i++) {
                 $(this).fadeTo(self.blinkSpeed, 0.5).fadeTo(self.blinkSpeed, 1.0);
             }
-            $(this).css('border', 'white 2px solid');    
+            $(this).css('border', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-bg-active-color') + ' 2px solid');    
             setTimeout(function(){
                 $(".footer-arrow-down").click();
             },self.autoNextDelay);   
