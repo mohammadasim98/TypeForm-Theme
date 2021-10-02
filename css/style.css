@@ -51,7 +51,7 @@ body{
     margin: auto;
     margin-top: 25vh;
     margin-left: -36px;
-    margin-bottom: 48vh;
+    margin-bottom: 111vh;
     position: relative;
 
 
@@ -96,7 +96,7 @@ body{
     margin-right: 13px;;
 }
 .form-numbering{
-    margin-top: 7px;
+    margin-top: 6px;
     margin-right: 5px;
     font-size: 14px;
 }
@@ -245,9 +245,12 @@ body{
     background-color: var(--prog-bar-filled-color);
     transition: all 500ms ease-out;
 }
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 768px) {
     .footer{
         visibility: hidden;
+    }
+    .form-item{
+        transform: scale(120%);
     }
 }
 @media screen and (max-width: 569px){
