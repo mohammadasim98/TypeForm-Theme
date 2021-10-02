@@ -112,6 +112,8 @@ function Form(){
                 }
             }else{
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button form-submit">Submit</i> </span>');
+                $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Ctrl + Enter ↵</strong></span>');
+
             }   
         }
         $('.form-element-tick').css('visibility', 'hidden');
@@ -199,6 +201,12 @@ function Form(){
             if(e.keyCode == 13){
                 e.preventDefault();
                 $(".footer-arrow-down").click();
+            }
+        });
+        $(document).keypress(function(e){
+            self.updateProgbar();
+            if(e.keyCode == 13 && self.counter == self.maxCount - 1){
+                $(".form-submit").click();
             }
         });
         $('.form').submit(function(e){

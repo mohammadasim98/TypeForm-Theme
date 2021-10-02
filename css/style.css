@@ -11,7 +11,7 @@
     --radio-element-key-label-bg-active-color: #ffffff;
     --radio-element-key-label-border-color: #9fbdba;
     --radio-element-key-label-border-active-color: #ffffff;
-    --text-element-border-color: #618c85;
+    --text-element-border-color: #578d85;
     --text-element-border-focus-color: #f9f9f9;
     --form-button-bg-color: #f9f9f9;
     --form-button-bg-active-color: #d3d3d3;
@@ -31,6 +31,7 @@ body{
 }
 .form-input-radio{
     width: fit-content;
+    margin-bottom: 1em;
 }
 .form-item, .form-input-radio input, .form-title{
     display: block;
@@ -41,7 +42,7 @@ body{
     position: relative;
 }
 .form-title{
-    font-size: 138%;
+    font-size: 150%;
     width: 100%;
 
 }
@@ -82,7 +83,7 @@ body{
 .form-button-enter{
     display: inline-block;
     margin-left: 14px;
-    font-size: 9.5px;
+    font-size: 11.5px;
 }
 .form-button:active, .form-button:hover{
     cursor: pointer;
@@ -92,11 +93,11 @@ body{
     background: var(--form-button-bg-active-color);
 }
 .form-numbering-arrow{
-    margin-top: 10.5px;
+    margin-top: 0.75em;
     margin-right: 13px;;
 }
 .form-numbering{
-    margin-top: 6px;
+    margin-top: 0.6em;
     margin-right: 5px;
     font-size: 14px;
 }
