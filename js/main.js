@@ -12,7 +12,10 @@ function Form(){
     this.yDiff = null;
     this.delta = null;
     this.blinkSpeed = 115;
-    this.autoNextDelay = 500;
+    this.autoNextDelay = 700;
+    this.blinkAmount = 2;
+    this.minBlinkOpacity = 0.2;
+    this.maxBlinkOpacity = 1;
     this.init = function(){
         self.addElements();
         self.bindEvents();
@@ -162,11 +165,11 @@ function Form(){
             $(this).find('.form-element-tick').css('visibility', 'visible');
             $(this).find('.form-element-label, .form-element-key').css('background-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-bg-active-color'));
             $(this).find('.form-element-label, .form-element-key').css('color', getComputedStyle(document.documentElement).getPropertyValue('--bg-color'));
-            $(this).find('.form-element-label, .form-element-key').css('border-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-bg-active-color'));
-            for(i=0;i<2;i++) {
-                $(this).fadeTo(self.blinkSpeed, 0.5).fadeTo(self.blinkSpeed, 1.0);
+            $(this).find('.form-element-label, .form-element-key').css('border-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-border-active-color'));
+            for(i=0;i<self.blinkAmount;i++) {
+                $(this).fadeTo(self.blinkSpeed, self.minBlinkOpacity).fadeTo(self.blinkSpeed, self.maxBlinkOpacity);
             }
-            $(this).css('border', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-bg-active-color') + ' 2px solid');    
+            $(this).css('border', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-border-active-color') + ' 2px solid');    
             setTimeout(function(){
                 $(".footer-arrow-down").click();
             },self.autoNextDelay);   

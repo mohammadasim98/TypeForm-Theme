@@ -4,18 +4,19 @@
     --prog-bar-color: #558b83;
     --prog-bar-filled-color: #ffffff;
     --radio-element-bg-color: #276c62;
-    --radio-element-border-color: #a9c4c0;
     --radio-element-bg-hover-color: #578d85;
-    --radio-element-bg-active-color: #ffffff;
+    --radio-element-border-color: #a9c4c0;
+    --radio-element-border-active-color: #ffffff;
     --radio-element-key-label-bg-color: #0e5b50;
     --radio-element-key-label-bg-active-color: #ffffff;
     --radio-element-key-label-border-color: #9fbdba;
-    --form-button-bg-color: #f9f9f9;
-    --form-button-text-color: #7a7a7a;
-    --form-button-bg-active-color: #d3d3d3;
-    --form-button-arrow-middle-border: #c1c1c1;
+    --radio-element-key-label-border-active-color: #ffffff;
     --text-element-border-color: #618c85;
     --text-element-border-focus-color: #f9f9f9;
+    --form-button-bg-color: #f9f9f9;
+    --form-button-bg-active-color: #d3d3d3;
+    --form-button-text-color: #7a7a7a;
+    --form-button-arrow-middle-border: #c1c1c1;
 }
 body{
     background-color: var(--bg-color);
