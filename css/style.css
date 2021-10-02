@@ -245,6 +245,11 @@ body{
     background-color: var(--prog-bar-filled-color);
     transition: all 500ms ease-out;
 }
+@media screen and (max-width: 425px) {
+    .footer{
+        visibility: hidden;
+    }
+}
 @media screen and (max-width: 569px){
     .form-input-text .form-element{
         font-size: 100%;
