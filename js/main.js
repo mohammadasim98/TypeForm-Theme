@@ -203,9 +203,9 @@ function Form(){
                 $(".footer-arrow-down").click();
             }
         });
-        $(document).keypress(function(e){
+        $(document).keydown(function(e){
             self.updateProgbar();
-            if(e.keyCode == 13 && self.counter == self.maxCount - 1){
+            if(e.keyCode == 13 && e.ctrlKey && self.counter == self.maxCount - 1){
                 $(".form-submit").click();
             }
         });
