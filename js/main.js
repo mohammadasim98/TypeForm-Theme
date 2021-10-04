@@ -17,6 +17,7 @@ function Form(){
     this.minBlinkOpacity = 0.2;
     this.maxBlinkOpacity = 1;
     this.progCount = 0;
+    this.trackPadScrollSensitivity = 45;
     this.init = function(){
         self.addElements();
         self.bindEvents();
@@ -105,7 +106,7 @@ function Form(){
                 $('<div class="form-element-label">'+String.fromCharCode('a'.charCodeAt(0)+j).toUpperCase()+'</div>').insertBefore($('.form-item').eq(i).find('.form-element-text').eq(j));
             }
             if(i<self.maxCount-1){
-                $('.form-item').eq(i).find('.form-content').append('<span class="form-button">OK <i class="fa fa-thin fa-check"></i> </span>');
+                $('.form-item').eq(i).find('.form-content').append('<span class="form-button">OK <i class="fa fa-light fa-check"></i></span>');
                 if($('.form-item').eq(i).find('.form-input-text').length){
                     $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Enter ↵</strong></span>');
                     $('.form-item').eq(i).find('.form-content').css('width', '100%');
@@ -147,14 +148,15 @@ function Form(){
         });
         $(window).on('wheel', function(e) {
             self.delta = e.originalEvent.deltaY;
-            if (self.delta>0){
+            console.log(self.delta);
+            if (self.delta>self.trackPadScrollSensitivity){
                 if(self.counter < self.maxCount-1){
                     self.hideUp(self.counter);
                     self.counter += 1;
                     self.showUp(self.counter);
                 }
             }
-            else{
+            else if(self.delta<-self.trackPadScrollSensitivity){
                 if(self.counter != 0){
                     self.hideDown(self.counter);
                     self.counter -= 1;
