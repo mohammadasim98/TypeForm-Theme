@@ -13,6 +13,7 @@
     --radio-element-key-label-border-active-color: #ffffff;
     --text-element-border-color: #578d85;
     --text-element-border-focus-color: #f9f9f9;
+    --text-element-placeholder-color: #578d85;
     --form-button-bg-color: #f9f9f9;
     --form-button-bg-active-color: #d3d3d3;
     --form-button-text-color: #7a7a7a;
@@ -166,7 +167,18 @@ body{
     color: var(--text-color);
     
 }
+::placeholder {
+    color: var(--text-element-placeholder-color);
+    opacity: 1; 
+}
+  
+:-ms-input-placeholder {
+    color: var(--text-element-placeholder-color);
+}
 
+::-ms-input-placeholder {
+    color: var(--text-element-placeholder-color);
+}
 .form-input-text .form-element:-webkit-autofill,
 .form-input-text .form-element:-webkit-autofill:hover,
 .form-input-text .form-element:-webkit-autofill:focus, 

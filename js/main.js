@@ -151,6 +151,7 @@ function Form(){
                     $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 }
             }else{
+                $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button form-submit">Submit</i> </span>');
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Ctrl + Enter ↵</strong></span>');
 
