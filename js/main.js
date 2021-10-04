@@ -22,6 +22,7 @@ function Form(){
         self.addElements();
         self.bindEvents();
         self.showUp();
+        self.checkFooterArrowDisabled();
     };
     this.showUp = function(){
         $('.form-item').eq(self.counter).show().animate({
@@ -57,6 +58,20 @@ function Form(){
         $('.bar-filled').css('width', prog.toString()+'%');
         self.progCount = 0;  
     };
+    this.checkFooterArrowDisabled = function(){
+        if(self.counter == 0){
+            $('.footer-arrow-up').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-arrow-disabled-color'));
+            $('.footer-arrow-up').css('cursor', 'auto');
+        }else if(self.counter == self.maxCount-1){
+            $('.footer-arrow-down').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-arrow-disabled-color'));
+            $('.footer-arrow-down').css('cursor', 'auto');
+        }else{
+            $('.footer-arrow-down').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-text-color'));
+            $('.footer-arrow-up').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-text-color'));
+            $('.footer-arrow-up').css('cursor', 'pointer');
+            $('.footer-arrow-down').css('cursor', 'pointer');
+        }
+    }
     this.getTouches = function(e){
         return e.touches || e.originalEvent.touches;
     }; 
@@ -123,12 +138,7 @@ function Form(){
         document.addEventListener('touchstart', self.handleTouchStart, false);        
         document.addEventListener('touchmove', self.handleTouchMove, false);
         $('.form-button').click(function(e){
-            if(self.counter < self.maxCount-1){
-                self.hideUp(self.counter);
-                self.counter += 1;
-                self.showUp(self.counter);
-            }
-            e.preventDefault();
+            $('.footer-arrow-down').click();
         });
         $('.footer-arrow-up').click(function(e){
             if(self.counter != 0){
@@ -137,6 +147,7 @@ function Form(){
                 self.showDown(self.counter);
             }
             e.preventDefault();
+            self.checkFooterArrowDisabled();
         });
         $('.footer-arrow-down').click(function(e){
             if(self.counter < self.maxCount-1){
@@ -145,6 +156,7 @@ function Form(){
                 self.showUp(self.counter);
             }
             e.preventDefault();
+            self.checkFooterArrowDisabled();
         });
         $(window).on('wheel', function(e) {
             self.delta = e.originalEvent.deltaY;
@@ -219,6 +231,7 @@ function Form(){
         $('.form-submit').click(function(){
             $('.form').submit();
         }); 
+
     };
 }
 $(document).ready(function(){

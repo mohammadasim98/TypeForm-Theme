@@ -17,6 +17,7 @@
     --form-button-bg-active-color: #d3d3d3;
     --form-button-text-color: #7a7a7a;
     --form-button-arrow-middle-border: #c1c1c1;
+    --form-button-arrow-disabled-color: #b5b5b5;
 }
 body{
     background-color: var(--bg-color);
@@ -58,7 +59,7 @@ body{
     width: 107%;
     display: flex;
     margin: auto;
-    margin-top: 25vh;
+    margin-top: 31vh;
     margin-left: -36px;
     margin-bottom: 111vh;
     position: relative;
@@ -87,6 +88,7 @@ body{
     font-weight: bolder;
     color: var(--form-button-text-color);
     font-size: 19px;
+    box-shadow: var(--bg-color) 0px 3px 12px 0px;
 }
 .form-button-enter{
     display: inline-block;
@@ -97,7 +99,7 @@ body{
     cursor: pointer;
 }
 .form-button:active{
-    transition: all 500ms;
+    transition: all 350ms;
     background: var(--form-button-bg-active-color);
 }
 .form-numbering-arrow{
@@ -199,8 +201,8 @@ body{
 
 .footer{
     position: absolute;
-    bottom: 13px;
-    right: 20px;
+    bottom: 19px;
+    right: 24px;
     background: var(--form-button-bg-color);
     display: flex;
     width: 56px;
@@ -227,7 +229,7 @@ body{
 }
 .footer-arrow:active{
     background: var(--form-button-bg-active-color);
-    transition: all 500ms;
+    transition: all 300ms;
     cursor: pointer;
 
 }
@@ -259,7 +261,7 @@ body{
         visibility: hidden;
     }
     .form-item{
-        transform: scale(120%);
+        transform: scale(100%);
     }
 }
 @media screen and (max-width: 569px){
