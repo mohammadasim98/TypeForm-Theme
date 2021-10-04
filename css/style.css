@@ -226,7 +226,25 @@ body{
     padding-left: 10px;
 
 }
+.rating-star{
+    display: inline-block;
+}
 
+.rating-star-numbering{
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+}
+.form-input-rating .form-element i{
+    font-size: 50px;
+}
+.form-input-rating .form-element i:hover{
+    opacity: 50%;
+    cursor: pointer;
+}
+.form-input-rating .form-element{
+    margin-bottom: 1em;
+}
 .footer{
     position: absolute;
     bottom: 19px;

@@ -229,7 +229,7 @@ function Form(){
                 }
                 $(this).css('border', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-border-active-color') + ' 2px solid');    
                 setTimeout(function(){
-                    $(".footer-arrow-down").click();
+                    self.moveForward();
                 },self.autoNextDelay);   
             }
             if($(this).parent().find('error')){
@@ -297,8 +297,37 @@ function Form(){
                 self.show();
                 self.desiredPosFlag = false;
             }
-        }); 
+        });
+        $('.form-input-rating .form-element i').click(function(){
+            if(!$(this).parent().next().find('i').hasClass('fa-regular') || $(this).hasClass('fa-regular')){
+                $(this).removeClass('fa-regular');
+                $(this).addClass('fa-solid');
+                $(this).parent().prevAll().find('i').removeClass('fa-regular');
+                $(this).parent().prevAll().find('i').addClass('fa-solid');
+                $(this).parent().nextAll().find('i').removeClass('fa-solid');
+                $(this).parent().nextAll().find('i').addClass('fa-regular');
+                for(i=0;i<self.blinkAmount;i++) {
+                    $(this).fadeTo(self.blinkSpeed, self.minBlinkOpacity).fadeTo(self.blinkSpeed, self.maxBlinkOpacity);
+                }
+                setTimeout(function(){
+                    self.moveForward();
+                    self.checkFooterArrowDisabled();
+                },self.autoNextDelay); 
+                $(this).parent().parent().siblings().attr('value', $(this).parent().prevAll().find('i').length+1)  
+            }else{
+                $(this).parent().prevAll().find('i').removeClass('fa-solid');
+                $(this).parent().prevAll().find('i').addClass('fa-regular');
+                $(this).removeClass('fa-solid');
+                $(this).addClass('fa-regular');
+                $(this).parent().parent().siblings().attr('value', '')  
 
+            }
+            if($(this).parent().parent().find('error')){
+                self.hideError();
+                self.errorShow = false;
+            }
+            self.updateProgbar();
+        });
     };
 }
 $(document).ready(function(){
