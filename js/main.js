@@ -18,10 +18,30 @@ function Form(){
     this.maxBlinkOpacity = 1;
     this.progCount = 0;
     this.trackPadScrollSensitivity = 45;
+    this.errorPos = null;
+    this.errorShow = false;
+    this.desiredPos = null;
+    this.desiredPosFlag = false;
     this.init = function(){
         self.addElements();
         self.bindEvents();
         self.showUp();
+        self.checkFooterArrowDisabled();
+    };
+    this.show = function(){
+        if(self.counter - self.desiredPos > 0){
+            while(self.counter != self.desiredPos){
+                self.hideDown(self.counter);
+                self.counter -= 1;
+                self.showDown(self.counter);
+            }
+        }else if(self.counter - self.desiredPos < 0){
+            while(self.counter != self.desiredPos){
+                self.hideUp(self.counter);
+                self.counter += 1;
+                self.showUp(self.counter);
+            }
+        }
         self.checkFooterArrowDisabled();
     };
     this.showUp = function(){
@@ -62,9 +82,13 @@ function Form(){
         if(self.counter == 0){
             $('.footer-arrow-up').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-arrow-disabled-color'));
             $('.footer-arrow-up').css('cursor', 'auto');
+            $('.footer-arrow-down').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-text-color'));
+            $('.footer-arrow-down').css('cursor', 'pointer');
         }else if(self.counter == self.maxCount-1){
             $('.footer-arrow-down').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-arrow-disabled-color'));
             $('.footer-arrow-down').css('cursor', 'auto');
+            $('.footer-arrow-up').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-text-color'));
+            $('.footer-arrow-up').css('cursor', 'pointer');
         }else{
             $('.footer-arrow-down').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-text-color'));
             $('.footer-arrow-up').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-text-color'));
@@ -130,9 +154,24 @@ function Form(){
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button form-submit">Submit</i> </span>');
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Ctrl + Enter ↵</strong></span>');
 
-            }   
+            }
+            $('.form-item').eq(i).find('.form-content').append('<div class="error"><i class="fa-solid fa-triangle-exclamation"></i> Please fill this in</div>');
+            $('.error').eq(i).hide();   
         }
         $('.form-element-tick').css('visibility', 'hidden');
+    };
+    this.showError = function(){
+        if(self.errorShow){
+            $('.form-item').eq(self.errorPos).find('.form-button').hide();
+            $('.form-item').eq(self.errorPos).find('.form-button-enter').hide();
+            $('.form-item').eq(self.errorPos).find('.error').show();
+        }
+    };
+    this.hideError = function(){
+        self.desiredPos = self.counter + 1;
+        $('.form-item').eq(self.counter).find('.error').hide();
+        $('.form-item').eq(self.counter).find('.form-button').show();
+        $('.form-item').eq(self.counter).find('.form-button-enter').show();
     };
     this.bindEvents = function(){
         document.addEventListener('touchstart', self.handleTouchStart, false);        
@@ -208,10 +247,18 @@ function Form(){
                     $(".footer-arrow-down").click();
                 },self.autoNextDelay);   
             }
+            if($(this).parent().find('error')){
+                self.hideError();
+                self.errorShow = false;
+            }
             self.updateProgbar();
         });
         $('.form-input-text .form-element').keyup(function(e){
             self.updateProgbar();
+            if($(this).parent().find('error')){
+                self.hideError();
+                self.errorShow = false;
+            }
             if(e.keyCode == 13){
                 e.preventDefault();
                 $(".footer-arrow-down").click();
@@ -229,7 +276,42 @@ function Form(){
             }
         });
         $('.form-submit').click(function(){
-            $('.form').submit();
+            for(i=0; i<$('.form-item').length; i++){
+                if($('.form-item').eq(i).find('input').attr('required')){
+                    if($('.form-item').eq(i).find('input').val()){
+                        continue;
+                    }
+                    else{
+                        self.errorPos = i;
+                        if(!self.desiredPosFlag){
+                            self.desiredPos = i;
+                            self.desiredPosFlag = true;
+                        }
+                        self.errorShow = true;
+                        self.showError();
+                    }
+                }
+                if($('.form-item').eq(i).find('input').attr('required')){
+                    if($('.form-item').eq(i).find('input').val()){
+                        continue;
+                    }
+                    else{
+                        self.errorPos = i;
+                        if(!self.desiredPosFlag){
+                            self.desiredPos = i;
+                            self.desiredPosFlag = true;
+                        }
+                        self.errorShow = true;
+                        self.showError();
+                    }
+                }
+            }
+            if(!self.errorShow){
+                $('.form').submit();
+            }else{
+                self.show();
+                self.desiredPosFlag = false;
+            }
         }); 
 
     };
