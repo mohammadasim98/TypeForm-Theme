@@ -17,7 +17,7 @@ function Form(){
     this.minBlinkOpacity = 0.2;
     this.maxBlinkOpacity = 1;
     this.progCount = 0;
-    this.trackPadScrollSensitivity = 45;
+    this.trackPadScrollSensitivity = 50;
     this.errorPos = null;
     this.errorShow = false;
     this.desiredPos = null;
@@ -31,15 +31,11 @@ function Form(){
     this.show = function(){
         if(self.counter - self.desiredPos > 0){
             while(self.counter != self.desiredPos){
-                self.hideDown(self.counter);
-                self.counter -= 1;
-                self.showDown(self.counter);
+                self.moveBackward();
             }
         }else if(self.counter - self.desiredPos < 0){
             while(self.counter != self.desiredPos){
-                self.hideUp(self.counter);
-                self.counter += 1;
-                self.showUp(self.counter);
+                self.moveBackward();
             }
         }
         self.checkFooterArrowDisabled();
@@ -68,6 +64,20 @@ function Form(){
             opacity: '0%',
         }, self.speed, 'swing').hide(self.speed);
     };
+    this.moveForward = function(){
+        if(self.counter < self.maxCount-1){
+            self.hideUp(self.counter);
+            self.counter += 1;
+            self.showUp(self.counter);
+        }
+    }
+    this.moveBackward = function(){
+        if(self.counter != 0){
+            self.hideDown(self.counter);
+            self.counter -= 1;
+            self.showDown(self.counter);
+        }
+    }
     this.updateProgbar = function(){
         for(i=0; i<$('.form-item').find('input').length; i++){
             if($('.form-item').find('input').eq(i).val()){
@@ -96,11 +106,9 @@ function Form(){
             $('.footer-arrow-down').css('cursor', 'pointer');
         }
     }
-    this.getTouches = function(e){
-        return e.touches || e.originalEvent.touches;
-    }; 
+
     this.handleTouchStart = function(e){
-        const firstTouch = self.getTouches(e)[0];                                      
+        const firstTouch = (e.touches || e.originalEvent.touches)[0];                                      
         self.xDown = firstTouch.clientX;                                      
         self.yDown = firstTouch.clientY;                                      
     }; 
@@ -114,17 +122,9 @@ function Form(){
         self.yDiff = self.yDown - self.yUp;                                                                  
         if(Math.abs(self.xDiff) <= Math.abs(self.yDiff)){
             if ( self.yDiff <= 0 ) {
-                if(self.counter != 0){
-                    self.hideDown(self.counter);
-                    self.counter -= 1;
-                    self.showDown(self.counter);
-                }
+                self.moveBackward();
             } else { 
-                if(self.counter < self.maxCount-1){
-                    self.hideUp(self.counter);
-                    self.counter += 1;
-                    self.showUp(self.counter);
-                }
+                self.moveForward();
             } 
             self.updateProgbar();                                                               
         }
@@ -177,23 +177,15 @@ function Form(){
         document.addEventListener('touchstart', self.handleTouchStart, false);        
         document.addEventListener('touchmove', self.handleTouchMove, false);
         $('.form-button').click(function(e){
-            $('.footer-arrow-down').click();
+            self.moveForward();
         });
         $('.footer-arrow-up').click(function(e){
-            if(self.counter != 0){
-                self.hideDown(self.counter);
-                self.counter -= 1;
-                self.showDown(self.counter);
-            }
+            self.moveBackward();
             e.preventDefault();
             self.checkFooterArrowDisabled();
         });
         $('.footer-arrow-down').click(function(e){
-            if(self.counter < self.maxCount-1){
-                self.hideUp(self.counter);
-                self.counter += 1;
-                self.showUp(self.counter);
-            }
+            self.moveForward();
             e.preventDefault();
             self.checkFooterArrowDisabled();
         });
@@ -201,18 +193,10 @@ function Form(){
             self.delta = e.originalEvent.deltaY;
             console.log(self.delta);
             if (self.delta>self.trackPadScrollSensitivity){
-                if(self.counter < self.maxCount-1){
-                    self.hideUp(self.counter);
-                    self.counter += 1;
-                    self.showUp(self.counter);
-                }
+                self.moveForward();
             }
             else if(self.delta<-self.trackPadScrollSensitivity){
-                if(self.counter != 0){
-                    self.hideDown(self.counter);
-                    self.counter -= 1;
-                    self.showDown(self.counter);
-                }
+                self.moveBackward();
             }
             self.updateProgbar();
         });
@@ -261,7 +245,7 @@ function Form(){
             }
             if(e.keyCode == 13){
                 e.preventDefault();
-                $(".footer-arrow-down").click();
+                self.moveForward();
             }
         });
         $(document).keydown(function(e){

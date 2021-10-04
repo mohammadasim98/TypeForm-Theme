@@ -230,6 +230,7 @@ body{
     margin: 0 auto;
 }
 .footer-arrow{
+    transition: all 500ms;
     line-height: 25px !important;
     color: var(--form-button-text-color);
     flex-grow: 1;
