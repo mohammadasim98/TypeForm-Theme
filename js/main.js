@@ -144,6 +144,11 @@ function Form(){
                 $('.form-item').eq(i).find('.form-input-radio .form-element').eq(j).append('<span class="form-element-tick"><i class="fa fa-check" aria-hidden="true"></i></span>');
                 $('<div class="form-element-label">'+String.fromCharCode('a'.charCodeAt(0)+j).toUpperCase()+'</div>').insertBefore($('.form-item').eq(i).find('.form-element-text').eq(j));
             }
+            for(j=0; j<$('.form-item').eq(i).find('.form-input-yes-no .form-element').length
+            ; j++){
+                $('.form-item').eq(i).find('.form-input-yes-no .form-element').eq(j).append('<span class="form-element-tick"><i class="fa fa-check" aria-hidden="true"></i></span>');
+                $('<div class="form-element-label">'+$('.form-item').eq(i).find('.form-input-yes-no .form-element').eq(j).find('.form-element-text').text()[0]+'</div>').insertBefore($('.form-item').eq(i).find('.form-element-text').eq(j));
+            }
             for(j=0; j<$('.form-item').eq(i).find('.rating-star').length; j++){
                 $('.form-item').eq(i).find('.rating-star').eq(j).append("<span class='rating-star-numbering'>"+(j+1)+"</span>");
             }
@@ -206,7 +211,7 @@ function Form(){
         $(document).click(function(){
             self.updateProgbar();
         });
-        $('.form-input-radio .form-element').click(function(){
+        $('.form-input-radio .form-element, .form-input-yes-no .form-element').click(function(){
             if($(this).find('.form-element-tick').css('visibility')=='visible'){
                 $(this).parent().find('.hidden-radio').val('');
                 $(this).find('.form-element-label, .form-element-key').css('background-color', '');

@@ -55,11 +55,11 @@ body{
     width: 70%;
     margin: auto;
 }
-.form-input-radio{
+.form-input-radio, .form-input-yes-no{
     width: fit-content;
     margin-bottom: 1em;
 }
-.form-item, .form-input-radio input, .form-title{
+.form-item, .form-input-radio input, .form-title, .form-input-yes-no input{
     display: block;
     margin: 15px;
     margin-left: 0;
@@ -83,7 +83,7 @@ body{
 
 
 }
-.form-input-radio .form-element{
+.form-input-radio .form-element, .form-input-yes-no .form-element{
     margin-bottom: 10px;
     border: solid 0.5px var(--radio-element-border-color);
     border-radius: 4px;
@@ -129,10 +129,12 @@ body{
     font-size: 14px;
 }
 
-.form-input-radio .form-element:hover{
+.form-input-radio .form-element:hover,
+.form-input-yes-no .form-element:hover{
     cursor: pointer;
     background-color: var(--radio-element-bg-hover-color);
 }
+
 .form-element-key{
     border: solid 0.5px var(--radio-element-key-label-border-color);
     font-weight: 100;
@@ -146,11 +148,13 @@ body{
     left: -26px;
     position: relative;
 }
-.form-input-radio .form-element:hover .form-element-key{
+.form-input-radio .form-element:hover .form-element-key,
+.form-input-yes-no .form-element:hover .form-element-key {
     visibility: visible;    
     border-right: none;
 }
-.form-input-radio .form-element:hover .form-element-label{
+.form-input-radio .form-element:hover .form-element-label,
+.form-input-yes-no .form-element:hover .form-element-label{
     border-left: none;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
