@@ -144,6 +144,9 @@ function Form(){
                 $('.form-item').eq(i).find('.form-input-radio .form-element').eq(j).append('<span class="form-element-tick"><i class="fa fa-check" aria-hidden="true"></i></span>');
                 $('<div class="form-element-label">'+String.fromCharCode('a'.charCodeAt(0)+j).toUpperCase()+'</div>').insertBefore($('.form-item').eq(i).find('.form-element-text').eq(j));
             }
+            for(j=0; j<$('.form-item').eq(i).find('.rating-star').length; j++){
+                $('.form-item').eq(i).find('.rating-star').eq(j).append("<span class='rating-star-numbering'>"+(j+1)+"</span>");
+            }
             if(i<self.maxCount-1){
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button">OK <i class="fa fa-light fa-check"></i></span>');
                 if($('.form-item').eq(i).find('.form-input-text').length){
@@ -192,7 +195,6 @@ function Form(){
         });
         $(window).on('wheel', function(e) {
             self.delta = e.originalEvent.deltaY;
-            console.log(self.delta);
             if (self.delta>self.trackPadScrollSensitivity){
                 self.moveForward();
             }
@@ -276,20 +278,6 @@ function Form(){
                         self.showError();
                     }
                 }
-                if($('.form-item').eq(i).find('input').attr('required')){
-                    if($('.form-item').eq(i).find('input').val()){
-                        continue;
-                    }
-                    else{
-                        self.errorPos = i;
-                        if(!self.desiredPosFlag){
-                            self.desiredPos = i;
-                            self.desiredPosFlag = true;
-                        }
-                        self.errorShow = true;
-                        self.showError();
-                    }
-                }
             }
             if(!self.errorShow){
                 $('.form').submit();
@@ -320,7 +308,6 @@ function Form(){
                 $(this).removeClass('fa-solid');
                 $(this).addClass('fa-regular');
                 $(this).parent().parent().siblings().attr('value', '')  
-
             }
             if($(this).parent().parent().find('error')){
                 self.hideError();

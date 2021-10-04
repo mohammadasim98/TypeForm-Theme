@@ -235,10 +235,10 @@ body{
     text-align: center;
     margin-top: 15px;
 }
-.form-input-rating .form-element i{
+.rating-star i{
     font-size: 50px;
 }
-.form-input-rating .form-element i:hover{
+.rating-star>i:hover{
     opacity: 50%;
     cursor: pointer;
 }
