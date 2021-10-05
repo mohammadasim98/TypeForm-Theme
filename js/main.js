@@ -458,9 +458,9 @@ function Form(){
                 
                 for(j=0; j<$(this).val().length; j++){
                     $(dropDownElements).eq(i).find('span').eq(0).html(dropDownEle.find('span').eq(0).html().replace(startBold, '').replace(endBold, ''));
-                    if($(this).val()==dropDownText.slice(0, j+1)){
+                    if($(this).val().toUpperCase()==dropDownText.slice(0, j+1).toUpperCase()){
                         matches += 1;
-                        $(dropDownElements).eq(i).find('span').eq(0).html(dropDownText.replace($(this).val(), startBold + $(this).val() + endBold));
+                        $(dropDownElements).eq(i).find('span').eq(0).html(dropDownText.replace(dropDownText.slice(0, j+1), startBold + dropDownText.slice(0, j+1) + endBold));
                         $(dropDownElements).eq(i).parent().show();
                         $(dropDownElements).eq(i).show();
                         self.dropDownAngleClose($(dropDownElements).parent().parent().find('.form-dropdown-arrow i'));

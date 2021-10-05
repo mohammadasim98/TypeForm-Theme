@@ -152,8 +152,11 @@ body{
     border-bottom:  0.5px solid var(--text-element-border-color);
     display: flex;
 }
+.form-dropdown-arrow{
+    border: none;
+}
 .form-input-dropdown .form-dropdown-arrow i{
-    margin-top: 9px;
+    margin-top: 16px;
     padding: 8px;
     cursor: pointer;
 }
@@ -312,7 +315,7 @@ body{
     margin-top: 15px;
 }
 .rating-star i{
-    font-size: 50px;
+    font-size: 280%;
 }
 .rating-star>i:hover{
     opacity: 50%;
@@ -386,6 +389,9 @@ body{
     .form-item{
         transform: scale(100%);
     }
+    .rating-star i{
+        font-size: 200%;
+    }
 }
 @media screen and (max-width: 569px){
     .form-input-text .form-element{
@@ -399,30 +405,48 @@ body{
     .form-input-text .form-element{
         font-size: 85%;
     }
+    .form-dropdown-element .form-element-tick{
+        width: 14%;
+    }
 }
 @media screen and (min-width: 375px){
     .form-item{
         width: 114%;
+    }
+    .form-dropdown-element .form-element-tick{
+        width: 12.5%;
     }
 }
 @media screen and (min-width: 425px){
     .form-item{
         width: 112.5%;
     }
+    .form-dropdown-element .form-element-tick{
+        width: 10.5%;
+    }
 }
 @media screen and (min-width: 768px){
     .form-item{
         width: 107.5%;
+    }
+    .form-dropdown-element .form-element-tick{
+        width: 6.5%;
     }
 }
 @media screen and (min-width: 1024px){
     .form-item{
         width: 105.5%;
     }
+    .form-dropdown-element .form-element-tick{
+        width: 4.5%;
+    }
 }
 @media screen and (min-width: 1440px){
     .form-item{
         width: 104%;
+    }
+    .form-dropdown-element .form-element-tick{
+        width: 3.5%;
     }
 }
 @media screen and (min-width: 2560px){
