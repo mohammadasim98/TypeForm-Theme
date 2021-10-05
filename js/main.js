@@ -22,6 +22,9 @@ function Form(){
     this.errorShow = false;
     this.desiredPos = null;
     this.desiredPosFlag = false;
+    this.errorMessage= '';
+    this.dontHideDropDown = false;
+    this.dontToggleDropDownArrow = false;
     this.init = function(){
         self.addElements();
         self.bindEvents();
@@ -70,6 +73,7 @@ function Form(){
             self.counter += 1;
             self.showUp(self.counter);
         }
+        self.checkFooterArrowDisabled();
     }
     this.moveBackward = function(){
         if(self.counter != 0){
@@ -77,6 +81,7 @@ function Form(){
             self.counter -= 1;
             self.showDown(self.counter);
         }
+        self.checkFooterArrowDisabled();
     }
     this.updateProgbar = function(){
         for(i=0; i<$('.form-item').find('input').length; i++){
@@ -90,18 +95,18 @@ function Form(){
     };
     this.checkFooterArrowDisabled = function(){
         if(self.counter == 0){
-            $('.footer-arrow-up').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-arrow-disabled-color'));
+            $('.footer-arrow-up').css('color', self.getColor('--form-button-arrow-disabled-color'));
             $('.footer-arrow-up').css('cursor', 'auto');
-            $('.footer-arrow-down').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-text-color'));
+            $('.footer-arrow-down').css('color', self.getColor('--form-button-text-color'));
             $('.footer-arrow-down').css('cursor', 'pointer');
         }else if(self.counter == self.maxCount-1){
-            $('.footer-arrow-down').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-arrow-disabled-color'));
+            $('.footer-arrow-down').css('color', self.getColor('--form-button-arrow-disabled-color'));
             $('.footer-arrow-down').css('cursor', 'auto');
-            $('.footer-arrow-up').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-text-color'));
+            $('.footer-arrow-up').css('color', self.getColor('--form-button-text-color'));
             $('.footer-arrow-up').css('cursor', 'pointer');
         }else{
-            $('.footer-arrow-down').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-text-color'));
-            $('.footer-arrow-up').css('color', getComputedStyle(document.documentElement).getPropertyValue('--form-button-text-color'));
+            $('.footer-arrow-down').css('color', self.getColor('--form-button-text-color'));
+            $('.footer-arrow-up').css('color', self.getColor('--form-button-text-color'));
             $('.footer-arrow-up').css('cursor', 'pointer');
             $('.footer-arrow-down').css('cursor', 'pointer');
         }
@@ -139,10 +144,10 @@ function Form(){
             $('<div class="form-numbering-arrow"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>').insertBefore($('.form-content').eq(i-1));
         }
         for(i=0; i<self.maxCount; i++){
-            for(j=0; j<$('.form-item').eq(i).find('.form-input-radio .form-element').length
+            for(j=0; j<$('.form-item').eq(i).find('.form-input-radio .form-element, .form-dropdown-element').length
             ; j++){
-                $('.form-item').eq(i).find('.form-input-radio .form-element').eq(j).append('<span class="form-element-tick"><i class="fa fa-check" aria-hidden="true"></i></span>');
-                $('<div class="form-element-label">'+String.fromCharCode('a'.charCodeAt(0)+j).toUpperCase()+'</div>').insertBefore($('.form-item').eq(i).find('.form-element-text').eq(j));
+                $('.form-item').eq(i).find('.form-input-radio .form-element, .form-dropdown-element').eq(j).append('<span class="form-element-tick"><i class="fa fa-check" aria-hidden="true"></i></span>');
+                $('<div class="form-element-label">'+String.fromCharCode('a'.charCodeAt(0)+j).toUpperCase()+'</div>').insertBefore($('.form-item').eq(i).find('.form-element-text', '.form-dropdown-element').eq(j));
             }
             for(j=0; j<$('.form-item').eq(i).find('.form-input-yes-no .form-element').length
             ; j++){
@@ -154,33 +159,88 @@ function Form(){
             }
             if(i<self.maxCount-1){
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button">OK <i class="fa fa-light fa-check"></i></span>');
-                if($('.form-item').eq(i).find('.form-input-text').length){
-                    $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Enter ↵</strong></span>');
+                if($('.form-item').eq(i).find('.form-input-text, .form-input-dropdown').length){
+                    if(!$('.form-item').eq(i).find('.form-input-dropdown').length){
+                        $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Enter ↵</strong></span>');
+                    }
                     $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 }
             }else{
-                $('.form-item').eq(i).find('.form-content').css('width', '100%');
+                if($('.form-item').eq(i).find('.form-input-text, .form-input-dropdown').length){
+                    $('.form-item').eq(i).find('.form-content').css('width', '100%');
+                }
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button form-submit">Submit</i> </span>');
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Ctrl + Enter ↵</strong></span>');
 
             }
-            $('.form-item').eq(i).find('.form-content').append('<div class="error"><i class="fa-solid fa-triangle-exclamation"></i> Please fill this in</div>');
+            $('.form-item').eq(i).find('.form-content').append('<div class="error"></div>');
             $('.error').eq(i).hide();   
         }
         $('.form-element-tick').css('visibility', 'hidden');
     };
+    this.dropDownAngleUp = function(ele){
+        if(!self.dontToggleDropDownArrow){
+            ele.removeClass('fa-angle-down').removeClass('fa-close').addClass('fa-angle-up');
+        }
+        ele.parent().parent().parent().find('.form-dropdown-content').show();
+        ele.parent().parent().css('border-bottom', '2px solid '+self.getColor('--text-element-border-focus-color'));
+        ele.parent().parent().parent().parent().find('.form-button').hide();
+        ele.parent().parent().parent().parent().find('.form-button-enter').hide();
+    };
+    this.dropDownAngleDown = function(ele, flag = true){
+        if(!self.dontToggleDropDownArrow){
+            ele.removeClass('fa-angle-up').removeClass('fa-close').addClass('fa-angle-down');
+        }
+        ele.parent().parent().parent().find('.form-dropdown-content').hide();
+        ele.parent().parent().css('border-bottom', '');
+        if(flag){
+            ele.parent().parent().parent().parent().find('.form-button').show();
+            ele.parent().parent().parent().parent().find('.form-button-enter').show();
+        }
+    };
+    this.dropDownAngleClose = function(ele){
+        ele.removeClass('fa-angle-down').removeClass('fa-angle-up').addClass('fa-close');
+        ele.parent().parent().parent().find('.form-dropdown-content').show();
+        ele.parent().parent().css('border-bottom', '2px solid '+self.getColor('--text-element-border-focus-color'));
+        ele.parent().parent().parent().parent().find('.form-button').hide();
+        ele.parent().parent().parent().parent().find('.form-button-enter').hide();
+    };
+    this.resetDropDown = function(dropDownElements){
+        var dropDownEle = "";
+        var dropDownText = "";
+        var startBold = '<strong class="form-dropdown-strong">';
+        var endBold = '</strong>';
+        for(i=0; i<dropDownElements.length; i++){
+            dropDownEle = $(dropDownElements).eq(i);
+            dropDownText = dropDownEle.text().trim();
+            $(dropDownElements).eq(i).find('span').eq(0).html(dropDownEle.find('span').eq(0).html().replace(startBold, '').replace(endBold, ''));
+            $(dropDownElements).eq(i).show();
+            $(dropDownElements).eq(i).find('.form-element-tick').css('visibility', 'hidden');
+            $(dropDownElements).eq(i).css('border', '0.5px solid' + self.getColor('--radio-element-border-active-color'));
+        }
+    }
+    this.getColor = function(text){
+        return  getComputedStyle(document.documentElement).getPropertyValue(text);
+    }
     this.showError = function(){
         if(self.errorShow){
             $('.form-item').eq(self.errorPos).find('.form-button').hide();
             $('.form-item').eq(self.errorPos).find('.form-button-enter').hide();
             $('.form-item').eq(self.errorPos).find('.error').show();
+            $('.form-item').eq(self.errorPos).find('.error').html('<i class="fa-solid fa-triangle-exclamation"></i> '+self.errorMessage);
         }
     };
-    this.hideError = function(){
-        self.desiredPos = self.counter + 1;
-        $('.form-item').eq(self.counter).find('.error').hide();
-        $('.form-item').eq(self.counter).find('.form-button').show();
-        $('.form-item').eq(self.counter).find('.form-button-enter').show();
+    this.hideError = function(flag, allowButtonShow=true){
+        if(!self.errorShow){
+            if(flag){
+                self.desiredPos = self.counter + 1;
+            }
+            $('.form-item').eq(self.counter).find('.error').hide();
+            if(allowButtonShow){
+                $('.form-item').eq(self.counter).find('.form-button').show();
+                $('.form-item').eq(self.counter).find('.form-button-enter').show();
+            }
+        }
     };
     this.bindEvents = function(){
         document.addEventListener('touchstart', self.handleTouchStart, false);        
@@ -191,12 +251,10 @@ function Form(){
         $('.footer-arrow-up').click(function(e){
             self.moveBackward();
             e.preventDefault();
-            self.checkFooterArrowDisabled();
         });
         $('.footer-arrow-down').click(function(e){
             self.moveForward();
             e.preventDefault();
-            self.checkFooterArrowDisabled();
         });
         $(window).on('wheel', function(e) {
             self.delta = e.originalEvent.deltaY;
@@ -208,8 +266,19 @@ function Form(){
             }
             self.updateProgbar();
         });
-        $(document).click(function(){
+        $(document).click(function(e){
             self.updateProgbar();
+            if(!($(e.target).hasClass('form-element') || $(e.target).hasClass('dropdown-arrow-element') || $(e.target).hasClass('footer-arrow'))){
+                if(!self.dontHideDropDown){
+                    $('.form-dropdown-content').hide();
+                    if($(e.target).hasClass('form-submit')||self.errorShow==true){
+                        self.dropDownAngleDown($('.form-dropdown-arrow i'), false);
+                    }else{
+                        self.dropDownAngleDown($('.form-dropdown-arrow i'));
+                    }
+                }
+                self.dontHideDropDown = false;
+            }
         });
         $('.form-input-radio .form-element, .form-input-yes-no .form-element').click(function(){
             if($(this).find('.form-element-tick').css('visibility')=='visible'){
@@ -228,13 +297,13 @@ function Form(){
                 $(this).parent().find('.form-element').css('border', '');
                 $(this).parent().find('.form-element-tick').css('visibility', 'hidden');
                 $(this).find('.form-element-tick').css('visibility', 'visible');
-                $(this).find('.form-element-label, .form-element-key').css('background-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-bg-active-color'));
-                $(this).find('.form-element-label, .form-element-key').css('color', getComputedStyle(document.documentElement).getPropertyValue('--bg-color'));
-                $(this).find('.form-element-label, .form-element-key').css('border-color', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-key-label-border-active-color'));
+                $(this).find('.form-element-label, .form-element-key').css('background-color', self.getColor('--radio-element-key-label-bg-active-color'));
+                $(this).find('.form-element-label, .form-element-key').css('color', self.getColor('--bg-color'));
+                $(this).find('.form-element-label, .form-element-key').css('border-color', self.getColor('--radio-element-key-label-border-active-color'));
                 for(i=0;i<self.blinkAmount;i++) {
                     $(this).fadeTo(self.blinkSpeed, self.minBlinkOpacity).fadeTo(self.blinkSpeed, self.maxBlinkOpacity);
                 }
-                $(this).css('border', getComputedStyle(document.documentElement).getPropertyValue('--radio-element-border-active-color') + ' 2px solid');    
+                $(this).css('border', self.getColor('--radio-element-border-active-color') + ' 2px solid');    
                 setTimeout(function(){
                     self.moveForward();
                 },self.autoNextDelay);   
@@ -280,6 +349,7 @@ function Form(){
                             self.desiredPosFlag = true;
                         }
                         self.errorShow = true;
+                        self.errorMessage = 'Please fill this in';
                         self.showError();
                     }
                 }
@@ -304,7 +374,6 @@ function Form(){
                 }
                 setTimeout(function(){
                     self.moveForward();
-                    self.checkFooterArrowDisabled();
                 },self.autoNextDelay); 
                 $(this).parent().parent().siblings().attr('value', $(this).parent().prevAll().find('i').length+1)  
             }else{
@@ -317,6 +386,110 @@ function Form(){
             if($(this).parent().parent().find('error')){
                 self.hideError();
                 self.errorShow = false;
+            }
+            self.updateProgbar();
+        });
+        $('.form-input-dropdown .form-element').click(function(){
+            if($(this).val()){
+                self.dontToggleDropDownArrow = true;
+                $(this).parent().parent().find('.form-dropdown-content').toggle();
+                $(this).parent().parent().parent().find('.form-button').toggle();
+            }else{
+                self.dontToggleDropDownArrow = false;
+                if($(this).siblings().find('.dropdown-arrow-element').hasClass('fa-angle-down')){
+                    self.dropDownAngleUp($(this).siblings().find('.dropdown-arrow-element'));
+                }else{
+                    self.dropDownAngleDown($(this).siblings().find('.dropdown-arrow-element'));
+                }
+            }
+        });
+        $('.dropdown-arrow-element').click(function(){
+            self.dontToggleDropDownArrow = false;
+            self.dontHideDropDown = false;
+            if($(this).hasClass('fa-angle-down')){
+                self.dropDownAngleUp($(this));
+            }else{
+                if($(this).hasClass('fa-close')){
+                    $(this).parent().parent().find('.form-element').val('');
+                    $(this).parent().parent().parent().find('.form-dropdown-element').css('border', '0.5px solid '+self.getColor('--radio-element-border-color'));
+                    $(this).parent().parent().parent().find('.form-element-tick').css('visibility', 'hidden');
+                    self.resetDropDown($(this).parent().parent().parent().find('.form-dropdown-element'));
+                }
+                self.dropDownAngleDown($(this));
+            }
+        });
+        $('.form-dropdown-element').click(function(){
+            self.dontHideDropDown = true;
+            self.dontToggleDropDownArrow = true;
+            $(this).parent().parent().find('.form-element').val($(this).text().trim());
+            self.errorPos = $(this).parent().parent().parent().prevAll().length;
+            self.errorShow = false;
+            self.hideError(false);
+            
+            $(this).siblings().css('border', '');
+            $(this).parent().find('.form-element-tick').css('visibility', 'hidden');
+            $(this).find('.form-element-tick').css('visibility', 'visible');
+            for(i=0;i<self.blinkAmount;i++) {
+                $(this).fadeTo(self.blinkSpeed, self.minBlinkOpacity).fadeTo(self.blinkSpeed, self.maxBlinkOpacity);
+            }
+            $(this).css('border', self.getColor('--radio-element-border-active-color') + ' 2px solid');    
+            setTimeout(function(){
+                self.moveForward();
+            },self.autoNextDelay); 
+            self.dropDownAngleClose($(this).parent().parent().find('.form-dropdown-arrow i'));
+            $(this).parent().fadeOut('slow').hide('slow');
+            $(this).parent().parent().parent().find('.form-button').show().css('opacity', '0').fadeTo(2000, '100%');
+            self.updateProgbar();
+        });
+        $('.form-input-dropdown .form-element').on('keyup keypress', function(){
+            self.errorPos = $(this).parent().parent().parent().prevAll().length;
+            self.errorShow = false;
+            self.hideError(false);
+
+            var dropDownElements = $(this).parent().parent().find('.form-dropdown-element');
+            var dropDownEle = "";
+            var dropDownText = "";
+            var startBold = '<strong class="form-dropdown-strong">';
+            var endBold = '</strong>';
+            var matches = 0;
+            for(i=0; i<dropDownElements.length; i++){
+                dropDownEle = $(dropDownElements).eq(i);
+                dropDownText = dropDownEle.text().trim();
+                
+                for(j=0; j<$(this).val().length; j++){
+                    $(dropDownElements).eq(i).find('span').eq(0).html(dropDownEle.find('span').eq(0).html().replace(startBold, '').replace(endBold, ''));
+                    if($(this).val()==dropDownText.slice(0, j+1)){
+                        matches += 1;
+                        $(dropDownElements).eq(i).find('span').eq(0).html(dropDownText.replace($(this).val(), startBold + $(this).val() + endBold));
+                        $(dropDownElements).eq(i).parent().show();
+                        $(dropDownElements).eq(i).show();
+                        self.dropDownAngleClose($(dropDownElements).parent().parent().find('.form-dropdown-arrow i'));
+                    }else{
+                        $(dropDownElements).eq(i).find('span').eq(0).html(dropDownEle.find('span').eq(0).html().replace(startBold, '').replace(endBold, ''));
+                        $(dropDownElements).eq(i).hide();
+                    }
+                    self.errorPos = $(this).parent().parent().parent().prevAll().length;
+                    self.errorShow = false;
+                    self.hideError(false, false);
+                }
+                if(!$(this).val()){
+                    self.errorPos = $(this).parent().parent().parent().prevAll().length;
+                    self.errorShow = false;
+                    self.dontToggleDropDownArrow = false;
+                    self.dontHideDropDown = false;
+                    self.resetDropDown($(this).parent().parent().find('.form-dropdown-element'));
+                    self.dropDownAngleUp($(this).parent().find('.form-dropdown-arrow i'));
+                    self.hideError(false, false);
+                }else{
+                    self.dontToggleDropDownArrow = true;
+                    if(!matches){
+                        $(this).parent().parent().find('.form-dropdown-content').hide();
+                        self.errorShow = true;
+                        self.errorMessage = 'No suggestions found';
+                        self.errorPos = $(this).parent().parent().parent().parent().prevAll().length;
+                        self.showError();
+                    }
+                }
             }
             self.updateProgbar();
         });

@@ -21,6 +21,7 @@
     --form-button-arrow-disabled-color: #b5b5b5;
     --form-validation-error-text-color: #af0404;
     --form-validation-error-bg-color: #f7e6e6;
+    --form-dropdown-arrow-active-color: #ffffff;
 }
 body{
     background-color: var(--bg-color);
@@ -134,7 +135,33 @@ body{
     cursor: pointer;
     background-color: var(--radio-element-bg-hover-color);
 }
-
+.form-input-dropdown .form-element{
+    background-color: var(--bg-color);
+    border: none;
+    margin-top: 15px;
+    width: 100%;
+    height: 43px;
+    font-size: 167%;
+    color: var(--text-color);
+    display: inline-block;
+}
+.form-input-dropdown{
+    margin-bottom: 24px;
+}
+.form-dropdown-flex{
+    border-bottom:  0.5px solid var(--text-element-border-color);
+    display: flex;
+}
+.form-input-dropdown .form-dropdown-arrow i{
+    margin-top: 9px;
+    padding: 8px;
+    cursor: pointer;
+}
+.form-input-dropdown .form-dropdown-arrow i:active{
+    border: solid 2px var(--form-dropdown-arrow-active-color);
+    padding: 6px;
+    border-radius: 5px;
+}
 .form-element-key{
     border: solid 0.5px var(--radio-element-key-label-border-color);
     font-weight: 100;
@@ -168,8 +195,7 @@ body{
     min-width: 100%;
     height: 43px;
     font-size: 167%;
-    color: var(--text-color);
-    
+    color: var(--text-color);  
 }
 ::placeholder {
     color: var(--text-element-placeholder-color);
@@ -186,14 +212,19 @@ body{
 .form-input-text .form-element:-webkit-autofill,
 .form-input-text .form-element:-webkit-autofill:hover,
 .form-input-text .form-element:-webkit-autofill:focus, 
-.form-input-text .form-element:-webkit-autofill:active{
+.form-input-text .form-element:-webkit-autofill:active,
+.form-input-dropdown .form-element:-webkit-autofill,
+.form-input-dropdown .form-element:-webkit-autofill:hover,
+.form-input-dropdown .form-element:-webkit-autofill:focus, 
+.form-input-dropdown .form-element:-webkit-autofill:active{
     -webkit-text-fill-color: var(--text-color);
     -webkit-box-shadow: 0 0 0px 1000px var(--bg-color) inset;
     box-shadow: 0 0 0px 1000px var(--bg-color) inset;
 }
 
 @-moz-document url-prefix(){
-    .form-input-text .form-element:focus {
+    .form-input-text .form-element:focus, 
+    .form-input-dropdown .form-element:focus{
         outline: none;
     }
 }
@@ -201,8 +232,49 @@ body{
     outline-width: 0;
     caret-color: var(--text-color);
     border-bottom: 2px solid var(--text-element-border-focus-color);
-    
-
+}
+.form-input-dropdown .form-element:focus{
+    outline-width: 0;
+    caret-color: var(--text-color);
+}
+.form-dropdown-flex:focus-within{
+    border-bottom: 2px solid var(--text-element-border-focus-color);
+}
+.form-dropdown-content{
+    display: none;
+    border-bottom: 2px dashed;
+    padding-bottom: 20px;
+    margin-bottom: 17px;
+    margin-top: 8px;
+}
+.form-dropdown-element span{
+    width:100%;
+}
+.form-dropdown-element .form-element-tick{
+    width: 3.5%;
+    margin-top: 5px;
+}
+.form-dropdown-element{
+    margin-bottom: 5px;
+    border: solid 0.5px var(--radio-element-border-color);
+    border-radius: 4px;
+    background-color: var(--radio-element-bg-color);
+    height: 37px;
+    display: flex;
+    padding-right: 13px;
+    min-width: 166px;
+}
+.form-dropdown-element:hover{
+    cursor: pointer;
+    background-color: var(--radio-element-bg-hover-color);
+}
+.form-dropdown-element span{
+    margin: 3px 0;
+    margin-left: 15px;
+    font-size: 20px;
+}
+.form-dropdown-strong{
+    font-weight: bolder;
 }
 .form-element-label{
     border: solid 0.5px var(--radio-element-key-label-border-color);
