@@ -162,12 +162,17 @@ function Form(){
                 if($('.form-item').eq(i).find('.form-input-text, .form-input-dropdown').length){
                     if(!$('.form-item').eq(i).find('.form-input-dropdown').length){
                         $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Enter ↵</strong></span>');
+                    }else{
+                        $('.form-item').eq(i).find('.form-dropdown-flex').append('<div class="form-dropdown-arrow"><i class="dropdown-arrow-element fa fa-thin fa-angle-down"></i></div>');
                     }
                     $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 }
             }else{
                 if($('.form-item').eq(i).find('.form-input-text, .form-input-dropdown').length){
                     $('.form-item').eq(i).find('.form-content').css('width', '100%');
+                }
+                if($('.form-item').eq(i).find('.form-input-dropdown').length){
+                    $('.form-item').eq(i).find('.form-dropdown-flex').append('<div class="form-dropdown-arrow"><i class="dropdown-arrow-element fa fa-thin fa-angle-down"></i></div>');
                 }
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button form-submit">Submit</i> </span>');
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Ctrl + Enter ↵</strong></span>');
@@ -439,6 +444,7 @@ function Form(){
             self.dropDownAngleClose($(this).parent().parent().find('.form-dropdown-arrow i'));
             $(this).parent().fadeOut('slow').hide('slow');
             $(this).parent().parent().parent().find('.form-button').show().css('opacity', '0').fadeTo(2000, '100%');
+            $(this).parent().parent().parent().find('.form-button-enter').show().css('opacity', '0').fadeTo(2000, '100%');
             self.updateProgbar();
         });
         $('.form-input-dropdown .form-element').on('keyup keypress', function(){
@@ -486,7 +492,7 @@ function Form(){
                         $(this).parent().parent().find('.form-dropdown-content').hide();
                         self.errorShow = true;
                         self.errorMessage = 'No suggestions found';
-                        self.errorPos = $(this).parent().parent().parent().parent().prevAll().length;
+                        self.errorPos = $(this).parent().parent().parent().parent().prevAll(('.form-item')).length;
                         self.showError();
                     }
                 }
