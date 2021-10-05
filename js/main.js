@@ -110,6 +110,12 @@ function Form(){
             $('.footer-arrow-up').css('cursor', 'pointer');
             $('.footer-arrow-down').css('cursor', 'pointer');
         }
+        if(self.maxCount == 1){
+            $('.footer-arrow-down').css('color', self.getColor('--form-button-arrow-disabled-color'));
+            $('.footer-arrow-down').css('cursor', 'auto');
+            $('.footer-arrow-up').css('color', self.getColor('--form-button-arrow-disabled-color'));
+            $('.footer-arrow-up').css('cursor', 'auto');
+        }
     }
 
     this.handleTouchStart = function(e){
@@ -492,7 +498,7 @@ function Form(){
                         $(this).parent().parent().find('.form-dropdown-content').hide();
                         self.errorShow = true;
                         self.errorMessage = 'No suggestions found';
-                        self.errorPos = $(this).parent().parent().parent().parent().prevAll(('.form-item')).length;
+                        self.errorPos = $(this).parent().parent().parent().parent().prevAll('.form-item').length;
                         self.showError();
                     }
                 }
