@@ -324,6 +324,29 @@ body{
 .form-input-rating .form-element{
     margin-bottom: 1em;
 }
+.form-input-scale .form-element{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    line-height: 360%;
+    height: 60px;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    border: 0.5px solid var(--radio-element-border-color);
+    border-radius: 5px;
+    background-color: var(--radio-element-bg-color);
+    cursor: pointer;
+    margin-right: 6px;
+}
+.form-input-scale .form-element:hover{
+    background-color: var(--radio-element-bg-hover-color);
+}
+
+.form-input-scale{
+    display: flex;
+    margin-bottom: 1em;
+}
 .footer{
     position: absolute;
     bottom: 19px;

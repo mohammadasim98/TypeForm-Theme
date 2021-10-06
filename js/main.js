@@ -25,6 +25,7 @@ function Form(){
     this.errorMessage= '';
     this.dontHideDropDown = false;
     this.dontToggleDropDownArrow = false;
+    this.scaleLength = 10;
     this.init = function(){
         self.addElements();
         self.bindEvents();
@@ -173,12 +174,24 @@ function Form(){
                     }
                     $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 }
+                if($('.form-item').eq(i).find('.form-input-scale').length){
+                    $('.form-item').eq(i).find('.form-content').css('width', '100%');
+                    for(j=0; j<=self.scaleLength; j++){
+                        $('.form-item').eq(i).find('.form-input-scale').append('<div class="form-element">'+j+'</div>');
+                    }
+                }
             }else{
                 if($('.form-item').eq(i).find('.form-input-text, .form-input-dropdown').length){
                     $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 }
                 if($('.form-item').eq(i).find('.form-input-dropdown').length){
                     $('.form-item').eq(i).find('.form-dropdown-flex').append('<div class="form-dropdown-arrow"><i class="dropdown-arrow-element fa fa-thin fa-angle-down"></i></div>');
+                }
+                if($('.form-item').eq(i).find('.form-input-scale').length){
+                    $('.form-item').eq(i).find('.form-content').css('width', '100%');
+                    for(j=0; j<=self.scaleLength; j++){
+                        $('.form-item').eq(i).find('.form-input-scale').append('<div class="form-element">'+j+'</div>');
+                    }
                 }
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button form-submit">Submit</i> </span>');
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Ctrl + Enter ↵</strong></span>');
@@ -241,7 +254,7 @@ function Form(){
             $('.form-item').eq(self.errorPos).find('.error').html('<i class="fa-solid fa-triangle-exclamation"></i> '+self.errorMessage);
         }
     };
-    this.hideError = function(flag, allowButtonShow=true){
+    this.hideError = function(flag=true, allowButtonShow=true){
         if(!self.errorShow){
             if(flag){
                 self.desiredPos = self.counter + 1;
@@ -282,7 +295,7 @@ function Form(){
             if(!($(e.target).hasClass('form-element') || $(e.target).hasClass('dropdown-arrow-element') || $(e.target).hasClass('footer-arrow'))){
                 if(!self.dontHideDropDown){
                     $('.form-dropdown-content').hide();
-                    if($(e.target).hasClass('form-submit')||self.errorShow==true){
+                    if($(e.target).hasClass('form-submit')||self.errorShow==true || !$('.form-item').eq(self.counter).find('.form-input-dropdown').length){
                         self.dropDownAngleDown($('.form-dropdown-arrow i'), false);
                     }else{
                         self.dropDownAngleDown($('.form-dropdown-arrow i'));
@@ -373,7 +386,7 @@ function Form(){
             }
         });
         $('.form-input-rating .form-element i').click(function(){
-            if(!$(this).parent().next().find('i').hasClass('fa-regular') || $(this).hasClass('fa-regular')){
+            if((!$(this).parent().next().find('i').hasClass('fa-regular') || $(this).hasClass('fa-regular'))&&!$(this).hasClass('fa-solid')){
                 $(this).removeClass('fa-regular');
                 $(this).addClass('fa-solid');
                 $(this).parent().prevAll().find('i').removeClass('fa-regular');
@@ -395,8 +408,8 @@ function Form(){
                 $(this).parent().parent().siblings().attr('value', '')  
             }
             if($(this).parent().parent().find('error')){
-                self.hideError();
                 self.errorShow = false;
+                self.hideError();
             }
             self.updateProgbar();
         });
@@ -505,6 +518,29 @@ function Form(){
             }
             self.updateProgbar();
         });
+        $('.form-input-scale .form-element').click(function(){
+            $(this).parent().find('.form-element').css('border', '');
+            $(this).parent().find('.form-element').css('background-color', ''); 
+            if(!$(this).hasClass('current')){
+                $(this).css('background-color', self.getColor('--radio-element-bg-hover-color'));
+                $(this).addClass('current');
+                for(i=0;i<self.blinkAmount;i++) {
+                    $(this).fadeTo(self.blinkSpeed, self.minBlinkOpacity).fadeTo(self.blinkSpeed, self.maxBlinkOpacity);
+                }
+                $(this).css('border', self.getColor('--radio-element-border-active-color') + ' 2px solid');    
+                setTimeout(function(){
+                    self.moveForward();
+                },self.autoNextDelay);     
+                $(this).parent().find('.hidden-scale').val($(this).text());
+                self.errorShow = false;
+                self.errorPos = $(this).parent().parent().parent().prevAll('.form-item').length;
+                self.hideError();
+            }else{
+                $(this).removeClass('current');
+                $(this).parent().find('.hidden-scale').val('');
+            }
+            self.updateProgbar();
+        })
     };
 }
 $(document).ready(function(){
