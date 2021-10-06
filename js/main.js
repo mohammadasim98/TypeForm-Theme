@@ -26,6 +26,7 @@ function Form(){
     this.dontHideDropDown = false;
     this.dontToggleDropDownArrow = false;
     this.scaleLength = 10;
+    this.ratingLength = 5;
     this.wiggleSpeed = 70;
     this.wiggleCount = 4;
     this.wiggleAmount = '7px';
@@ -95,8 +96,8 @@ function Form(){
         }
     };
     this.updateProgbar = function(){
-        for(i=0; i<$('.form-item').find('input').length; i++){
-            if($('.form-item').find('input').eq(i).val()){
+        for(i=0; i<$('.form-item').find('.main').length; i++){
+            if($('.form-item').find('.main').eq(i).val()){
                 self.progCount += 1;
             }
         }
@@ -197,6 +198,12 @@ function Form(){
 
                     $('.form-item').eq(i).find('.date-day').append("<span>Day</span><input type='text' class='form-element'>");
                     $('.form-item').eq(i).find('.date-year').append("<span>Year</span><input type='text' class='form-element'>");
+                }
+                if($('.form-item').eq(i).find('.form-input-rating').length){
+                    $('.form-item').eq(i).find('.form-input-rating').append("<div class='form-element'></div>");
+                    for(j=0; j<= self.ratingLength; j++){
+                        $('.form-item').eq(i).find('.form-element').append("<div class='rating-star'><i class='fa-regular fa-star'></i></div>");
+                    }
                 }
             }else{
                 $('.form-item').eq(i).find('.form-content').css('width', '100%');
@@ -629,11 +636,16 @@ function Form(){
                     self.hideError();
                 }, self.wiggleAutoRemoveDelay);
             }else{
-                $(this).parent().parent().find('.hidden-date').val(
-                    $(this).parent().parent().find('.form-element').eq(0).val() + '-' + 
-                    $(this).parent().parent().find('.form-element').eq(1).val() + '-' + 
-                    $(this).parent().parent().find('.form-element').eq(2).val()
-                    );
+                if($(this).parent().parent().find('.form-element').eq(0).val() || $(this).parent().parent().find('.form-element').eq(1).val()
+                || $(this).parent().parent().find('.form-element').eq(2).val()){
+                    $(this).parent().parent().find('.hidden-date').val(
+                        $(this).parent().parent().find('.form-element').eq(0).val() + '-' + 
+                        $(this).parent().parent().find('.form-element').eq(1).val() + '-' + 
+                        $(this).parent().parent().find('.form-element').eq(2).val()
+                        );
+                }else{
+                    $(this).parent().parent().find('.hidden-date').val('');
+                }
                 self.errorShow = false;
                 self.errorPos = self.counter;
                 self.hideError();
@@ -641,6 +653,7 @@ function Form(){
                     $(this).parent().parent().parent().find('.form-button').click();
                 }
             }
+            self.updateProgbar();
         });
     };
 }
