@@ -26,6 +26,10 @@ function Form(){
     this.dontHideDropDown = false;
     this.dontToggleDropDownArrow = false;
     this.scaleLength = 10;
+    this.wiggleSpeed = 70;
+    this.wiggleCount = 4;
+    this.wiggleAmount = '7px';
+    this.wiggleAutoRemoveDelay = 3000;
     this.init = function(){
         self.addElements();
         self.bindEvents();
@@ -84,6 +88,12 @@ function Form(){
         }
         self.checkFooterArrowDisabled();
     }
+    this.wiggle = function(){
+        for(i = 0; i<self.wiggleCount; i++){
+            $('.form-item').eq(self.counter).animate({'left': self.wiggleAmount}, self.wiggleSpeed);
+            $('.form-item').eq(self.counter).animate({'left': '0px'}, self.wiggleSpeed);
+        }
+    };
     this.updateProgbar = function(){
         for(i=0; i<$('.form-item').find('input').length; i++){
             if($('.form-item').find('input').eq(i).val()){
@@ -166,7 +176,7 @@ function Form(){
             }
             if(i<self.maxCount-1){
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button">OK <i class="fa fa-light fa-check"></i></span>');
-                if($('.form-item').eq(i).find('.form-input-text, .form-input-dropdown').length){
+                if($('.form-item').eq(i).find('.form-input-text, .form-input-dropdown, .form-input-date').length){
                     if(!$('.form-item').eq(i).find('.form-input-dropdown').length){
                         $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Enter ↵</strong></span>');
                     }else{
@@ -270,6 +280,17 @@ function Form(){
         document.addEventListener('touchstart', self.handleTouchStart, false);        
         document.addEventListener('touchmove', self.handleTouchMove, false);
         $('.form-button').click(function(e){
+            if($(this).parent().find('.form-input-date').length){
+                if(!(!$(this).parent().find('.date-month .form-element').val()&&!$(this).parent().find('.date-day .form-element').val()
+                &&!$(this).parent().find('.date-year .form-element').val())&&!($(this).parent().find('.date-month .form-element').val()&&$(this).parent().find('.date-day .form-element').val()
+                &&$(this).parent().find('.date-year .form-element').val())){
+                    self.errorShow = true;
+                    self.errorPos = self.counter;
+                    self.errorMessage = "That date doesn't look valid—it's incomplete or doesn't exist";
+                    self.showError();
+                    return;
+                }
+            }
             self.moveForward();
         });
         $('.footer-arrow-up').click(function(e){
@@ -438,6 +459,9 @@ function Form(){
                     $(this).parent().parent().parent().find('.form-dropdown-element').css('border', '0.5px solid '+self.getColor('--radio-element-border-color'));
                     $(this).parent().parent().parent().find('.form-element-tick').css('visibility', 'hidden');
                     self.resetDropDown($(this).parent().parent().parent().find('.form-dropdown-element'));
+                    self.errorShow = false;
+                    self.errorPos = $(this).parent().parent().parent().parent().parent().prevAll('.form-item').length;
+                    self.hideError();
                 }
                 self.dropDownAngleDown($(this));
             }
@@ -446,7 +470,7 @@ function Form(){
             self.dontHideDropDown = true;
             self.dontToggleDropDownArrow = true;
             $(this).parent().parent().find('.form-element').val($(this).text().trim());
-            self.errorPos = $(this).parent().parent().parent().prevAll().length;
+            self.errorPos = $(this).parent().parent().parent().prevAll('.form-item').length;
             self.errorShow = false;
             self.hideError(false);
             
@@ -467,7 +491,7 @@ function Form(){
             self.updateProgbar();
         });
         $('.form-input-dropdown .form-element').on('keyup keypress', function(){
-            self.errorPos = $(this).parent().parent().parent().prevAll().length;
+            self.errorPos = self.counter;
             self.errorShow = false;
             self.hideError(false);
 
@@ -488,17 +512,17 @@ function Form(){
                         $(dropDownElements).eq(i).find('span').eq(0).html(dropDownText.replace(dropDownText.slice(0, j+1), startBold + dropDownText.slice(0, j+1) + endBold));
                         $(dropDownElements).eq(i).parent().show();
                         $(dropDownElements).eq(i).show();
-                        self.dropDownAngleClose($(dropDownElements).parent().parent().find('.form-dropdown-arrow i'));
                     }else{
                         $(dropDownElements).eq(i).find('span').eq(0).html(dropDownEle.find('span').eq(0).html().replace(startBold, '').replace(endBold, ''));
                         $(dropDownElements).eq(i).hide();
                     }
-                    self.errorPos = $(this).parent().parent().parent().prevAll().length;
+                    self.dropDownAngleClose($(dropDownElements).parent().parent().find('.form-dropdown-arrow i'));
+                    self.errorPos = self.counter;
                     self.errorShow = false;
                     self.hideError(false, false);
                 }
                 if(!$(this).val()){
-                    self.errorPos = $(this).parent().parent().parent().prevAll().length;
+                    self.errorPos = self.counter;
                     self.errorShow = false;
                     self.dontToggleDropDownArrow = false;
                     self.dontHideDropDown = false;
@@ -511,7 +535,7 @@ function Form(){
                         $(this).parent().parent().find('.form-dropdown-content').hide();
                         self.errorShow = true;
                         self.errorMessage = 'No suggestions found';
-                        self.errorPos = $(this).parent().parent().parent().parent().prevAll('.form-item').length;
+                        self.errorPos = self.counter;
                         self.showError();
                     }
                 }
@@ -542,6 +566,66 @@ function Form(){
             }
             self.updateProgbar();
         })
+        $('.form-input-date .form-element').keyup(function(e){
+            if($(this).val()>12 && $(this).parent().hasClass('date-month')){
+                $(this).val($(this).val().substring(0, $(this).val().length-1));
+                self.errorShow = true;
+                self.errorPos = self.counter;
+                self.errorMessage = "That date isn't valid. Check the month and day aren't reversed.";
+                self.showError();
+                self.wiggle();
+                setTimeout(function(){
+                    self.errorShow = false;
+                    self.errorPos = self.counter;
+                    self.hideError();
+                }, self.wiggleAutoRemoveDelay);
+            }else if($(this).val()>31 && $(this).parent().hasClass('date-day')){
+                $(this).val($(this).val().substring(0, $(this).val().length-1));
+                self.errorShow = true;
+                self.errorPos = self.counter;
+                self.errorMessage = "That date isn't valid. Check the month and day aren't reversed.";
+                self.showError();
+                self.wiggle();
+                setTimeout(function(){
+                    self.errorShow = false;
+                    self.errorPos = self.counter;
+                    self.hideError();
+                }, self.wiggleAutoRemoveDelay);
+            }else if($(this).val().length>4 && $(this).parent().hasClass('date-year')){
+                $(this).val($(this).val().substring(0, $(this).val().length-1));
+                self.errorShow = true;
+                self.errorPos = self.counter;
+                self.errorMessage = "That date isn't valid. Check the month and day aren't reversed.";
+                self.showError();
+                self.wiggle();
+                setTimeout(function(){
+                    self.errorShow = false;
+                    self.errorPos = self.counter;
+                    self.hideError();
+                }, self.wiggleAutoRemoveDelay);
+            }else if(!$.isNumeric($(this).val()) && e.keyCode !=13 &&  e.keyCode !=8 &&  e.keyCode !=9
+            && (e.keyCode <16 || e.keyCode >40) && e.keyCode !=45 && e.keyCode !=46 && e.keyCode!=144 
+            && e.keyCode!=145  && (e.keyCode<112 || e.keyCode>123)){
+                $(this).val($(this).val().substring(0, $(this).val().length-1));
+                self.errorShow = true;
+                self.errorPos = self.counter;
+                self.errorMessage = "Numbers only please";
+                self.showError();
+                self.wiggle();
+                setTimeout(function(){
+                    self.errorShow = false;
+                    self.errorPos = self.counter;
+                    self.hideError();
+                }, self.wiggleAutoRemoveDelay);
+            }else{
+                self.errorShow = false;
+                self.errorPos = self.counter;
+                self.hideError();
+                if(e.keyCode == 13){
+                    $(this).parent().parent().parent().find('.form-button').click();
+                }
+            }
+        });
     };
 }
 $(document).ready(function(){

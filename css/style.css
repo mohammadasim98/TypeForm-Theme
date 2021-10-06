@@ -219,7 +219,11 @@ body{
 .form-input-dropdown .form-element:-webkit-autofill,
 .form-input-dropdown .form-element:-webkit-autofill:hover,
 .form-input-dropdown .form-element:-webkit-autofill:focus, 
-.form-input-dropdown .form-element:-webkit-autofill:active{
+.form-input-dropdown .form-element:-webkit-autofill:active,
+.form-input-date .form-element:-webkit-autofill,
+.form-input-date .form-element:-webkit-autofill:hover,
+.form-input-date .form-element:-webkit-autofill:focus, 
+.form-input-date .form-element:-webkit-autofill:active{
     -webkit-text-fill-color: var(--text-color);
     -webkit-box-shadow: 0 0 0px 1000px var(--bg-color) inset;
     box-shadow: 0 0 0px 1000px var(--bg-color) inset;
@@ -227,11 +231,13 @@ body{
 
 @-moz-document url-prefix(){
     .form-input-text .form-element:focus, 
-    .form-input-dropdown .form-element:focus{
+    .form-input-dropdown .form-element:focus,
+    .form-input-date .form-element:focus{
         outline: none;
     }
 }
-.form-input-text .form-element:focus{
+.form-input-text .form-element:focus,
+.form-input-date .form-element:focus{
     outline-width: 0;
     caret-color: var(--text-color);
     border-bottom: 2px solid var(--text-element-border-focus-color);
@@ -346,6 +352,36 @@ body{
 .form-input-scale{
     display: flex;
     margin-bottom: 1em;
+}
+.date-month, .date-day, .date-year{
+    display:inline-block;
+}
+.date-month span, .date-day span, .date-year span{
+    display: block;
+    font-size: 14px;
+}
+.date-month .form-element{
+    width: 40px;
+}
+.date-day .form-element{
+    width: 35px;
+}
+.date-year .form-element{
+    width: 65px;
+}
+.date-slash{
+    font-size: 30px;
+    margin: 0 10px;
+}
+.form-input-date .form-element{
+    background-color: var(--bg-color);
+    border: none;
+    border-bottom: 0.5px solid var(--text-element-border-color);
+    margin-top:15px;
+    margin-bottom: 24px;
+    height: 43px;
+    font-size: 167%;
+    color: var(--text-color); 
 }
 .footer{
     position: absolute;
