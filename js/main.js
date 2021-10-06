@@ -519,6 +519,7 @@ function Form(){
             self.updateProgbar();
         });
         $('.form-input-scale .form-element').click(function(){
+            $(this).siblings().removeClass('current');
             $(this).parent().find('.form-element').css('border', '');
             $(this).parent().find('.form-element').css('background-color', ''); 
             if(!$(this).hasClass('current')){
