@@ -176,29 +176,36 @@ function Form(){
             }
             if(i<self.maxCount-1){
                 $('.form-item').eq(i).find('.form-content').append('<span class="form-button">OK <i class="fa fa-light fa-check"></i></span>');
+                $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 if($('.form-item').eq(i).find('.form-input-text, .form-input-dropdown, .form-input-date').length){
                     if(!$('.form-item').eq(i).find('.form-input-dropdown').length){
                         $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Enter ↵</strong></span>');
                     }else{
                         $('.form-item').eq(i).find('.form-dropdown-flex').append('<div class="form-dropdown-arrow"><i class="dropdown-arrow-element fa fa-thin fa-angle-down"></i></div>');
                     }
-                    $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 }
                 if($('.form-item').eq(i).find('.form-input-scale').length){
-                    $('.form-item').eq(i).find('.form-content').css('width', '100%');
                     for(j=0; j<=self.scaleLength; j++){
                         $('.form-item').eq(i).find('.form-input-scale').append('<div class="form-element">'+j+'</div>');
                     }
                 }
+                if($('.form-item').eq(i).find('.form-input-date').length){
+                    $('.form-item').eq(i).find('.date-month').append("<span>Month</span><input type='text' class='form-element'>");
+                    $("<span class='date-slash'>/</span>").insertAfter($('.form-item').eq(i).find('.form-input-date>div').eq(0));
+                    $("<span class='date-slash'>/</span>").insertAfter($('.form-item').eq(i).find('.form-input-date>div').eq(1));
+
+
+                    $('.form-item').eq(i).find('.date-day').append("<span>Day</span><input type='text' class='form-element'>");
+                    $('.form-item').eq(i).find('.date-year').append("<span>Year</span><input type='text' class='form-element'>");
+                }
             }else{
+                $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 if($('.form-item').eq(i).find('.form-input-text, .form-input-dropdown').length){
-                    $('.form-item').eq(i).find('.form-content').css('width', '100%');
                 }
                 if($('.form-item').eq(i).find('.form-input-dropdown').length){
                     $('.form-item').eq(i).find('.form-dropdown-flex').append('<div class="form-dropdown-arrow"><i class="dropdown-arrow-element fa fa-thin fa-angle-down"></i></div>');
                 }
                 if($('.form-item').eq(i).find('.form-input-scale').length){
-                    $('.form-item').eq(i).find('.form-content').css('width', '100%');
                     for(j=0; j<=self.scaleLength; j++){
                         $('.form-item').eq(i).find('.form-input-scale').append('<div class="form-element">'+j+'</div>');
                     }
@@ -383,8 +390,12 @@ function Form(){
         });
         $('.form-submit').click(function(){
             for(i=0; i<$('.form-item').length; i++){
-                if($('.form-item').eq(i).find('input').attr('required')){
-                    if($('.form-item').eq(i).find('input').val()){
+                if($('.form-item').eq(i).find('input').filter(function(){
+                    return $(this).prop('required'); 
+                }).length > 0){
+                    if($('.form-item').eq(i).find('input').filter(function(){
+                        return $.trim($(this).val()).length == 0
+                    }).length == 0){
                         continue;
                     }
                     else{
@@ -618,6 +629,11 @@ function Form(){
                     self.hideError();
                 }, self.wiggleAutoRemoveDelay);
             }else{
+                $(this).parent().parent().find('.hidden-date').val(
+                    $(this).parent().parent().find('.form-element').eq(0).val() + '-' + 
+                    $(this).parent().parent().find('.form-element').eq(1).val() + '-' + 
+                    $(this).parent().parent().find('.form-element').eq(2).val()
+                    );
                 self.errorShow = false;
                 self.errorPos = self.counter;
                 self.hideError();
