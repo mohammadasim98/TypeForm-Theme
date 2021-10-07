@@ -383,6 +383,67 @@ body{
     font-size: 167%;
     color: var(--text-color); 
 }
+.form-input-matrix table{
+    color: var(--text-color);
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+}
+.form-input-matrix thead{
+    color: var(--text-color);
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+}
+.form-input-matrix tbody tr{
+    background-color: var(--radio-element-bg-color);
+    border-radius: 5px;
+}
+.form-input-matrix tbody td:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.form-input-matrix tbody td:first-child{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.form-input-matrix td{
+    padding: 12px;
+    margin-bottom: 5px;
+}
+.matrix{
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background-color: rgb(14, 91, 80);
+    appearance: none;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline-color: rgb(255, 255, 255);
+    outline-offset: 4px;
+    position: relative;
+    margin: auto;
+}
+.matrix-clear{
+    text-decoration: underline;
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: block;
+}
+.matrix:checked:after{
+    content: "";
+    display: block;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 .footer{
     position: absolute;
     bottom: 19px;

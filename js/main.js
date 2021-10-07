@@ -655,6 +655,31 @@ function Form(){
             }
             self.updateProgbar();
         });
+        $('.matrix').click(function(){
+            var flag = true
+            for(i=0; i<$(this).parent().parent().parent().find('tr').length; i++){
+                if($(this).parent().parent().parent().find('tr').eq(i).find('.matrix').filter(function(){
+                    return $(this).prop('checked');
+                }).length > 0){
+                    continue;
+                }else{
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                $(this).parent().parent().parent().parent().parent().find('.hidden-matrix').val('checked');
+                self.errorShow = false;
+                self.errorPos = $(this).parent().parent().parent().parent().parent().parent().parent().prevAll('.form-item').prevAll().length;
+                self.hideError();
+            }
+            self.updateProgbar();
+        });
+        $('.matrix-clear').click(function(){
+            $(this).parent().parent().parent().parent().find('.hidden-matrix').val('');
+            $(this).parent().parent().parent().parent().find('.matrix').prop('checked', false);
+            self.updateProgbar();
+        });
     };
 }
 $(document).ready(function(){
