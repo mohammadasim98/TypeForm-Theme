@@ -135,7 +135,8 @@ body{
     cursor: pointer;
     background-color: var(--radio-element-bg-hover-color);
 }
-.form-input-dropdown .form-element{
+.form-input-dropdown .form-element, 
+.form-input-phone .form-element{
     background-color: var(--bg-color);
     border: none;
     margin-top: 15px;
@@ -220,6 +221,10 @@ body{
 .form-input-dropdown .form-element:-webkit-autofill:hover,
 .form-input-dropdown .form-element:-webkit-autofill:focus, 
 .form-input-dropdown .form-element:-webkit-autofill:active,
+.form-input-phone .form-element:-webkit-autofill,
+.form-input-phone .form-element:-webkit-autofill:hover,
+.form-input-phone .form-element:-webkit-autofill:focus, 
+.form-input-phone .form-element:-webkit-autofill:active,
 .form-input-date .form-element:-webkit-autofill,
 .form-input-date .form-element:-webkit-autofill:hover,
 .form-input-date .form-element:-webkit-autofill:focus, 
@@ -232,17 +237,20 @@ body{
 @-moz-document url-prefix(){
     .form-input-text .form-element:focus, 
     .form-input-dropdown .form-element:focus,
-    .form-input-date .form-element:focus{
+    .form-input-date .form-element:focus
+    .form-input-phone .form-element:focus{
         outline: none;
     }
 }
 .form-input-text .form-element:focus,
-.form-input-date .form-element:focus{
+.form-input-date .form-element:focus,
+.form-input-phone .form-element:focus{
     outline-width: 0;
     caret-color: var(--text-color);
     border-bottom: 2px solid var(--text-element-border-focus-color);
 }
-.form-input-dropdown .form-element:focus{
+.form-input-dropdown .form-element:focus,
+.form-phone-dropdown-content .form-element:focus{
     outline-width: 0;
     caret-color: var(--text-color);
 }
@@ -255,15 +263,31 @@ body{
     padding-bottom: 20px;
     margin-bottom: 17px;
     margin-top: 8px;
+    overflow: auto;
+    max-height: 50%;
 }
-.form-dropdown-element span{
+::-webkit-scrollbar {
+    width: 6px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--text-color);
+    border-radius: 10px;
+}
+.form-dropdown-element span,
+.form-phone-element span{
     width:100%;
 }
 .form-dropdown-element .form-element-tick{
     width: 3.5%;
     margin-top: 5px;
 }
-.form-dropdown-element{
+.form-dropdown-element,
+.form-phone-element{
     margin-bottom: 5px;
     border: solid 0.5px var(--radio-element-border-color);
     border-radius: 4px;
@@ -273,11 +297,13 @@ body{
     padding-right: 13px;
     min-width: 166px;
 }
-.form-dropdown-element:hover{
+.form-dropdown-element:hover,
+.form-phone-element:hover{
     cursor: pointer;
     background-color: var(--radio-element-bg-hover-color);
 }
-.form-dropdown-element span{
+.form-dropdown-element span,
+.form-phone-element span{
     margin: 3px 0;
     margin-left: 15px;
     font-size: 20px;
@@ -443,6 +469,73 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+.form-phone-flex{
+    display: flex;
+}
+.form-phone-dropdown-content{
+    border: 0.5px solid var(--radio-element-border-color);
+    border-radius: 5px;
+    padding: 15px;
+    width: 50%;
+    width: 450px;
+    height: 300px;
+    overflow: hidden;
+    z-index: 50;
+    display: none;
+    top: 20px;
+    position: relative;
+}
+.form-phone-flex .form-element{
+    margin-bottom: 15px;
+    border-bottom: 0.5px solid var(--radio-element-border-color);
+}
+.form-phone-flex{
+    width: 40%;
+}
+.phone-flag-holder{
+    border-bottom: 0.5px solid var(--radio-element-border-color);
+    padding: 13px 0;
+    width: 10%;
+    cursor: pointer;
+    margin: auto;
+    margin-right: 10px;
+    margin-left: auto;
+}
+.phone-flag-holder:active:after{
+    display: block;
+}
+.form-phone-element:active{
+    border: 2px solid var(--radio-element-border-active-color);
+}
+.form-input-phone{
+    margin-bottom: 10px;
+}
+.form-input-phone .form-element{
+    border-bottom: 0.5px solid var(--radio-element-border-color);
+}
+.iti__country-list{
+    background-color: var(--bg-color) !important;
+    border-radius: 10px;
+    top: 20px;
+}
+.iti__country{
+    background-color: var(--radio-element-bg-color) !important;
+    border: 0.5px solid var(--radio-element-border-color) !important;
+    border-radius: 5px;
+    margin: 11px;
+    margin-bottom: -6px !important;
+}
+.iti__country:hover{
+    background-color: var(--radio-element-bg-hover-color) !important;
+    border: 2px solid var(--radio-element-border-active-color) !important;
+
+}
+.iti__flag{
+    margin-right: 18px;
+}
+.iti__divider{
+    margin: 12px 0;
 }
 .footer{
     position: absolute;
