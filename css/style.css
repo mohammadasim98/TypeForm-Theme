@@ -531,10 +531,11 @@ body{
 .iti__country:hover{
     background-color: var(--radio-element-bg-hover-color) !important;
     border: 2px solid var(--radio-element-border-active-color) !important;
-
+    margin: 9px;
 }
 .iti__flag{
     margin-right: 18px;
+    transform: scale(1.5);
 }
 .iti__divider{
     margin: 12px 0;
@@ -542,6 +543,13 @@ body{
 .iti__selected-flag{
     background-color: var(--bg-color) !important;
     border-bottom: 0.5px solid var(--radio-element-border-color);
+}
+.iti__country-name{
+    margin-left: 12px;
+}
+.iti__dial-code{
+    float: right;
+    color: var(--text-color) !important;
 }
 .footer{
     position: absolute;
