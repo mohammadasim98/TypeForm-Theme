@@ -509,15 +509,17 @@ body{
     border: 2px solid var(--radio-element-border-active-color);
 }
 .form-input-phone{
-    margin-bottom: 10px;
+    margin: 42px 0;
 }
 .form-input-phone .form-element{
     border-bottom: 0.5px solid var(--radio-element-border-color);
+    margin-left: 82px !important;
+    padding: 0 !important;
 }
 .iti__country-list{
     background-color: var(--bg-color) !important;
     border-radius: 10px;
-    top: 20px;
+    top: 15px;
 }
 .iti__country{
     background-color: var(--radio-element-bg-color) !important;
@@ -536,6 +538,10 @@ body{
 }
 .iti__divider{
     margin: 12px 0;
+}
+.iti__selected-flag{
+    background-color: var(--bg-color) !important;
+    border-bottom: 0.5px solid var(--radio-element-border-color);
 }
 .footer{
     position: absolute;

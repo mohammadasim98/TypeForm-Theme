@@ -31,6 +31,10 @@ function Form(){
     this.wiggleCount = 4;
     this.wiggleAmount = '7px';
     this.wiggleAutoRemoveDelay = 3000;
+    this.wiggleFlag = false;
+    this.wiggleNumber = 0;
+    this.wiggleResetDelay = 1000;
+    this.flag = false;
     this.init = function(){
         self.initIntlPhone();
         self.addElements();
@@ -91,9 +95,21 @@ function Form(){
         self.checkFooterArrowDisabled();
     }
     this.wiggle = function(){
-        for(i = 0; i<self.wiggleCount; i++){
-            $('.form-item').eq(self.counter).animate({'left': self.wiggleAmount}, self.wiggleSpeed);
-            $('.form-item').eq(self.counter).animate({'left': '0px'}, self.wiggleSpeed);
+        if(!self.wiggleFlag){
+            self.wiggleFlag = true;
+            for(i = 0; i<self.wiggleCount; i++){
+                self.wiggleNumber = i;
+                $('.form-item').eq(self.counter).animate({'left': self.wiggleAmount}, self.wiggleSpeed);
+                $('.form-item').eq(self.counter).animate({'left': '0px'}, self.wiggleSpeed, function(){
+                    if(self.wiggleNumber == self.wiggleCount-1){
+                        setTimeout(function(){
+                            self.wiggleFlag = false;
+                        }, self.wiggleResetDelay);
+                        self.wiggleNumber = 0;
+                    }                
+                });
+                
+            }
         }
     };
     this.initIntlPhone = function(){
@@ -228,6 +244,9 @@ function Form(){
                     for(j=0; j<= self.ratingLength; j++){
                         $('.form-item').eq(i).find('.form-element').append("<div class='rating-star'><i class='fa-regular fa-star'></i></div>");
                     }
+                }
+                if($('.form-item').eq(i).find('.form-input-phone').length){
+                    $('.form-item').eq(i).find('.form-content').append('<span class="form-button-enter">press <strong>Enter ↵</strong></span>');
                 }
             }else{
                 $('.form-item').eq(i).find('.form-content').css('width', '100%');
@@ -381,13 +400,15 @@ function Form(){
             || $(e.target).hasClass('form-input-phone') || $(e.target).hasClass('form')){
                 $('.form-item').eq(self.counter).find('.iti__country-list').css('border-color', self.getColor('--radio-element-border-color'));
                 $('.form-item').eq(self.counter).find('.iti__country-list').animate({
-                    'top': '20px',
+                    'top': '15px',
                     'opacity':'0%',
                     'border-width': '0.5px'
-                },350, 'swing');
+                },300, 'swing');
                 $('.form-item').eq(self.counter).find('.form-button').show();
                 $('.form-item').eq(self.counter).find('.iti__country-list').hide();
                 $('.form-item').eq(self.counter).find('.iti__selected-flag').show();
+                $('.form-item').eq(self.counter).find('.iti__selected-flag').css('border-bottom', self.getColor('--radio-element-border-color') + " 0.5px solid");
+
                 $('.form-item').eq(self.counter).find('.form-element').show();
             }
         });
@@ -755,35 +776,74 @@ function Form(){
                         $(this).val($(this).val() + ' ');
                     }else if($(this).val().length == 7 && $(this).val()[0] == '+'){
                         $(this).val($(this).val() + ' ');
+                    }else if(($(this).val().length > 15  && $(this).val()[0] == '+') || ($(this).val().length > 11 && $(this).val()[0] != '+')){
+                        $(this).val($(this).val().slice(0, $(this).val().length-1));
+                        self.wiggle();
+                        self.errorShow = true;
+                        self.errorPos = self.counter;
+                        self.errorMessage = "Max characters reached";
+                        self.showError(); 
+                        setTimeout(function(){
+                            self.errorShow = false;
+                            self.errorPos = self.counter;
+                            self.hideError();
+                        }, self.wiggleAutoRemoveDelay);
+                    }
+                }
+                if(e.keyCode == 13){
+                    if($(this).val().length == 15 || $(this).val().length == 11){
+                        self.moveForward();
+                    }else{
+                        self.wiggle();
+                        self.errorShow = true;
+                        self.errorPos = self.counter;
+                        self.errorMessage = "Hmm... that phone number isn't valid";
+                        self.showError();                    
                     }
                 }
             }
             self.updateProgbar();
         });
         $('.iti__flag-container').click(function(){
-            $('.iti__arrow--up').removeClass('fa fa-angle-down iti__arrow--up').addClass('fa fa-angle-down');
-            $(this).find('.iti__selected-flag').hide();
-            $(this).siblings().hide();
-            $('.form-item').eq(self.counter).find('.form-button').hide();
-            $('.form-item').eq(self.counter).find('.iti__country-list').show().css('opacity', '0%');
-            $('.form-item').eq(self.counter).find('.iti__country-list').animate({
-                'top': '0px',
-                'opacity':'100%',
-                'border-width': '2px'
-            },350, 'swing').css('border-color', self.getColor('--radio-element-border-active-color'));
+            if(!self.flag){
+                $.fx.off = true;
+                $('.iti__arrow--up').removeClass('fa fa-angle-down iti__arrow--up').addClass('fa fa-angle-down');
+                $('.form-item').eq(self.counter).find('.form-button').hide();
+                $('.form-item').eq(self.counter).find('.form-button-enter').hide();
+                $(this).find('.iti__selected-flag').hide();
+                $(this).siblings().hide();
+                $('.form-item').eq(self.counter).find('.iti__country-list').show().css('opacity', '0%');
+                $.fx.off = false;
+                $('.form-item').eq(self.counter).find('.iti__country-list').animate({
+                    'top': '0px',
+                    'opacity':'100%',
+                    'border-width': '2px'
+                },300, 'swing').css('border-color', self.getColor('--radio-element-border-active-color'));
+                self.flag = true;
+                self.errorShow = false;
+                self.hideError();
+                $('.form-item').eq(self.counter).find('.iti__selected-flag').css('border-bottom', self.getColor('--radio-element-border-active-color') + " 2px solid");
+            }
+            self.flag = false;
+
         });
         $('.iti__country').click(function(){
             $(this).parent().next('.form-element').css('padding-left', '94px !important');
             $('.form-item').eq(self.counter).find('.iti__country-list').css('border-color', self.getColor('--radio-element-border-color'));
             $('.form-item').eq(self.counter).find('.iti__country-list').animate({
-                'top': '20px',
+                'top': '15px',
                 'opacity':'0%',
                 'border-width': '0.5px'
-            },350, 'swing');
+            },300, 'swing');
             $('.form-item').eq(self.counter).find('.form-button').show();
+            $('.form-item').eq(self.counter).find('.form-button-enter').show();
             $('.form-item').eq(self.counter).find('.iti__country-list').hide();
             $('.form-item').eq(self.counter).find('.iti__selected-flag').show();
             $('.form-item').eq(self.counter).find('.form-element').show();
+            $('.form-item').eq(self.counter).find('.iti__country-list').addClass('iti__hide')
+            self.flag = true;
+            self.errorShow = false;
+            self.hideError();
         });
     };
 }
