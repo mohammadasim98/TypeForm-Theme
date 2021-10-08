@@ -41,6 +41,7 @@ function Form(){
         self.bindEvents();
         self.showUp();
         self.checkFooterArrowDisabled();
+        self.updateProgbar();
     };
     this.show = function(){
         if(self.counter - self.desiredPos > 0){
@@ -446,17 +447,17 @@ function Form(){
                     self.moveForward();
                 },self.autoNextDelay);   
             }
-            if($(this).parent().find('error')){
-                self.hideError();
+            if($(this).parent().parent().find('error')){
                 self.errorShow = false;
+                self.hideError();
             }
             self.updateProgbar();
         });
         $('.form-input-text .form-element').keyup(function(e){
             self.updateProgbar();
             if($(this).parent().find('error')){
-                self.hideError();
                 self.errorShow = false;
+                self.hideError();
             }
             if(e.keyCode == 13){
                 e.preventDefault();
@@ -702,7 +703,7 @@ function Form(){
                 }, self.wiggleAutoRemoveDelay);
             }else if(!$.isNumeric($(this).val()) && e.keyCode !=13 &&  e.keyCode !=8 &&  e.keyCode !=9
             && (e.keyCode <16 || e.keyCode >40) && e.keyCode !=45 && e.keyCode !=46 && e.keyCode!=144 
-            && e.keyCode!=145  && (e.keyCode<112 || e.keyCode>123)){
+            && e.keyCode!=145  && (e.keyCode<112 || e.keyCode>123) && $(this).val()){
                 $(this).val($(this).val().substring(0, $(this).val().length-1));
                 self.errorShow = true;
                 self.errorPos = self.counter;
@@ -724,6 +725,15 @@ function Form(){
                         );
                 }else{
                     $(this).parent().parent().find('.hidden-date').val('');
+                }
+                if((($(this).parent().hasClass('date-month') || $(this).parent().hasClass('date-day')) && $(this).val().length>=2) || $(this).val().length==4){
+                    $(this).parent().next().next().find('.form-element').focus();
+                }
+                if($(this).val().length==0 && e.keyCode == 8){
+                    $(this).parent().prev().prev().find('.form-element').focus();
+                }
+                if($(this).val()[0]==0 && $(this).val().length >= 3){
+                    $(this).val($(this).val().slice(1, $(this).val().length));
                 }
                 self.errorShow = false;
                 self.errorPos = self.counter;
@@ -799,6 +809,18 @@ function Form(){
                             self.errorPos = self.counter;
                             self.hideError();
                         }, self.wiggleAutoRemoveDelay);
+                    }else if($(this).val()[0] == '+' && !$.isNumeric($(this).val().slice(1, $(this).val().length))){
+                        $(this).val($(this).val().slice(0, $(this).val().length-1));
+                        self.wiggle();
+                        self.errorShow = true;
+                        self.errorPos = self.counter;
+                        self.errorMessage = "Numbers only please";
+                        self.showError(); 
+                        setTimeout(function(){
+                            self.errorShow = false;
+                            self.errorPos = self.counter;
+                            self.hideError();
+                        }, self.wiggleAutoRemoveDelay);
                     }
                 }
                 if(e.keyCode == 13){
@@ -812,6 +834,12 @@ function Form(){
                         self.showError();                    
                     }
                 }
+            }
+            if(!(/\s/g.test($(this).val())) && $(this).val().length == 13){
+                $(this).val($(this).val().slice(0, 3) + " " + $(this).val().slice(3, 6) + ' ' + $(this).val().slice(6, $(this).val().length));
+            }
+            if(!(/\s/g.test($(this).val())) && $(this).val().length == 10){
+                $(this).val($(this).val().slice(0, 3) + " " + $(this).val().slice(3, $(this).val().length));
             }
             self.updateProgbar();
         });
