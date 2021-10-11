@@ -35,6 +35,7 @@ function Form(){
     this.wiggleNumber = 0;
     this.wiggleResetDelay = 1000;
     this.flag = false;
+    this.newLead = false;
     this.init = function(){
         self.initIntlPhone();
         self.addElements();
@@ -95,6 +96,48 @@ function Form(){
         }
         self.checkFooterArrowDisabled();
     }
+    this.createLead = function(){
+        if(!self.newLead){
+            let obj = {};
+            var formitems = $('.form-item');
+    
+            // send survey metadata
+            obj['parent_type'] = $('.form').attr('data-parent');
+            obj['survey_country'] = $('.form').attr('data-country');
+            obj['survey_clinic'] = $('.form').attr('data-clinic');
+    
+            for(let i = 0; i <= $('.form').children('input').length; i++){
+            if($('.form').children('input:nth-child('+ i +')').attr('name')=='id'){
+                obj['survey_id'] = $('.form').children('input:nth-child('+ i +')').attr('value'); 
+            }
+            } 
+    
+            //send 1st Page fields data 
+            for(let i = 0; i < formitems.length; i++){
+            if(formitems.get(i).hasAttribute('data-label')){
+                if(formitems.eq(i).attr('data-label')=='full_name'){
+                obj['first_name'] = formitems.eq(i).find('.form-control').val().split(" ")[0];
+                obj['last_name'] = formitems.eq(i).find('.form-control').val().split(" ").slice(1).join(' ');
+                }else if(formitems.eq(i).attr('data-label') == 'phone_mobile' && formitems.eq(i).find('.inptfielsd').val()[0]!='+'){
+                obj[formitems.eq(i).attr('data-label')] = formitems.eq(i).find('.iti__selected-dial-code').text() + formitems.eq(i).find('.form-control').val();
+                }else{
+                obj[formitems.eq(i).attr('data-label')] = formitems.eq(i).find('.form-control').val();
+                }
+            }
+            }
+            $.ajax({
+            type: "POST",
+            url: "index.php?entryPoint=surveynewlead",
+            dataType: 'json',
+            data: obj,
+            success: function(object){
+                console.log(object);
+                $('#lead_id').attr('value', object);
+                self.newLead = true;
+            }
+            });
+        }
+    };
     this.wiggle = function(){
         if(!self.wiggleFlag){
             self.wiggleFlag = true;
@@ -665,31 +708,9 @@ function Form(){
             self.updateProgbar();
         })
         $('.form-input-date .form-element').keyup(function(e){
-            if($(this).val()>12 && $(this).parent().hasClass('date-month')){
-                $(this).val($(this).val().substring(0, $(this).val().length-1));
-                self.errorShow = true;
-                self.errorPos = self.counter;
-                self.errorMessage = "That date isn't valid. Check the month and day aren't reversed.";
-                self.showError();
-                self.wiggle();
-                setTimeout(function(){
-                    self.errorShow = false;
-                    self.errorPos = self.counter;
-                    self.hideError();
-                }, self.wiggleAutoRemoveDelay);
-            }else if($(this).val()>31 && $(this).parent().hasClass('date-day')){
-                $(this).val($(this).val().substring(0, $(this).val().length-1));
-                self.errorShow = true;
-                self.errorPos = self.counter;
-                self.errorMessage = "That date isn't valid. Check the month and day aren't reversed.";
-                self.showError();
-                self.wiggle();
-                setTimeout(function(){
-                    self.errorShow = false;
-                    self.errorPos = self.counter;
-                    self.hideError();
-                }, self.wiggleAutoRemoveDelay);
-            }else if($(this).val().length>4 && $(this).parent().hasClass('date-year')){
+            if((($(this).val()>12||$(this).val() == '00') && $(this).parent().hasClass('date-month'))||
+            (($(this).val()>31||$(this).val() == '00') && $(this).parent().hasClass('date-day'))||
+            ($(this).val().length>4 && $(this).parent().hasClass('date-year'))){
                 $(this).val($(this).val().substring(0, $(this).val().length-1));
                 self.errorShow = true;
                 self.errorPos = self.counter;
@@ -774,6 +795,7 @@ function Form(){
             self.errorShow = false;
             self.errorPos = self.counter;
             self.hideError();
+            var dialCode = $(this).parent().find('.iti__active .iti__dial-code').text();
             $(this).css('padding-left', '94px')
             if(!$.isNumeric($(this).val().replace(/\s/g, '')) && $(this).val()[0] != '+' && e.keyCode !=13 &&  e.keyCode !=8 &&  e.keyCode !=9
             && (e.keyCode <16 || e.keyCode >40) && e.keyCode !=45 && e.keyCode !=46 && e.keyCode!=144 
@@ -793,11 +815,11 @@ function Form(){
                 if(e.keyCode !=13 &&  e.keyCode !=8 &&  e.keyCode !=9
                 && (e.keyCode <16 || e.keyCode >40) && e.keyCode !=45 && e.keyCode !=46 && e.keyCode!=144 
                 && e.keyCode!=145  && (e.keyCode<112 || e.keyCode>123)){
-                    if($(this).val().length == 3){
+                    if($(this).val().length == dialCode.length && $(this).val()[0] == '+'){
                         $(this).val($(this).val() + ' ');
-                    }else if($(this).val().length == 7 && $(this).val()[0] == '+'){
+                    }else if($(this).val().replace(/\s/g, '').replace(dialCode, '').length == 3 && $(this).val().replace(/\s/g, '').replace(dialCode, '')[0] != '+'){
                         $(this).val($(this).val() + ' ');
-                    }else if(($(this).val().length > 15  && $(this).val()[0] == '+') || ($(this).val().length > 11 && $(this).val()[0] != '+')){
+                    }else if($(this).val().replace(/\s/g, '').replace(dialCode, '').length > 10){
                         $(this).val($(this).val().slice(0, $(this).val().length-1));
                         self.wiggle();
                         self.errorShow = true;
@@ -809,7 +831,7 @@ function Form(){
                             self.errorPos = self.counter;
                             self.hideError();
                         }, self.wiggleAutoRemoveDelay);
-                    }else if($(this).val()[0] == '+' && !$.isNumeric($(this).val().slice(1, $(this).val().length))){
+                    }else if(!$.isNumeric($(this).val().replace(/\s/g, '').replace(dialCode, '')) && $(this).val().length > 1){
                         $(this).val($(this).val().slice(0, $(this).val().length-1));
                         self.wiggle();
                         self.errorShow = true;
@@ -824,7 +846,7 @@ function Form(){
                     }
                 }
                 if(e.keyCode == 13){
-                    if($(this).val().length == 15 || $(this).val().length == 11 || $(this).val().length == 0){
+                    if($(this).val().replace(/\s/g, '').replace(dialCode, '').length == 10 || $(this).val().length == 0){
                         self.moveForward();
                     }else{
                         self.wiggle();
@@ -835,11 +857,11 @@ function Form(){
                     }
                 }
             }
-            if(!(/\s/g.test($(this).val())) && $(this).val().length == 13){
-                $(this).val($(this).val().slice(0, 3) + " " + $(this).val().slice(3, 6) + ' ' + $(this).val().slice(6, $(this).val().length));
+            if($(this).val().replace(/\s/g, '').replace(dialCode, '').length==10 && $(this).val()[0] == '+'){
+                $(this).val($(this).val().replace(/\s/g, '').slice(0, dialCode.length) + " " + $(this).val().replace(/\s/g, '').slice(dialCode.length, dialCode.length+3) + ' ' + $(this).val().replace(/\s/g, '').slice(dialCode.length+3, $(this).val().length));
             }
-            if(!(/\s/g.test($(this).val())) && $(this).val().length == 10){
-                $(this).val($(this).val().slice(0, 3) + " " + $(this).val().slice(3, $(this).val().length));
+            if($(this).val().replace(/\s/g, '').length >= 3 && $(this).val()[0] != '+'){
+                $(this).val($(this).val().replace(/\s/g, '').slice(0, 3) + " " + $(this).val().replace(/\s/g, '').slice(3, $(this).val().length));
             }
             self.updateProgbar();
         });
@@ -890,4 +912,3 @@ $(document).ready(function(){
     typeForm = new Form();
     typeForm.init();
 });
-
