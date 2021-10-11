@@ -514,6 +514,9 @@ function Form(){
             if(e.keyCode == 13 && e.ctrlKey && self.counter == self.maxCount - 1){
                 $(".form-submit").click();
             }
+            if(e.keyCode == 13) {
+                e.preventDefault();
+            }
         });
         $('.form').submit(function(e){
             if(self.counter < self.maxCount-1){
@@ -908,6 +911,22 @@ function Form(){
                 self.hideError();
             }, 1000);
         });
+        $('.email').keyup(function(e){
+            self.errorShow = false;
+            self.errorPos = self.counter;
+            self.hideError();
+            if(e.keyCode == 13 || (e.keyCode == 13 && e.ctrlKey)){
+                var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                if(re.test(String($(this).val()).toLowerCase())){
+                    self.moveForward();
+                }else{
+                    self.errorShow = true;
+                    self.errorMessage = "Hmm… that email doesn't look valid";
+                    self.errorPos = self.counter;
+                    self.showError();
+                }
+            }
+        })
     };
 }
 $(document).ready(function(){
