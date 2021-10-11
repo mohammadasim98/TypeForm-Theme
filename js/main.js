@@ -86,6 +86,9 @@ function Form(){
             self.counter += 1;
             self.showUp(self.counter);
         }
+        if(self.counter > 2){
+            self.createLead();
+        }
         self.checkFooterArrowDisabled();
     }
     this.moveBackward = function(){
@@ -100,8 +103,7 @@ function Form(){
         if(!self.newLead){
             let obj = {};
             var formitems = $('.form-item');
-    
-            // send survey metadata
+
             obj['parent_type'] = $('.form').attr('data-parent');
             obj['survey_country'] = $('.form').attr('data-country');
             obj['survey_clinic'] = $('.form').attr('data-clinic');
@@ -112,16 +114,16 @@ function Form(){
             }
             } 
     
-            //send 1st Page fields data 
             for(let i = 0; i < formitems.length; i++){
             if(formitems.get(i).hasAttribute('data-label')){
                 if(formitems.eq(i).attr('data-label')=='full_name'){
-                obj['first_name'] = formitems.eq(i).find('.form-control').val().split(" ")[0];
-                obj['last_name'] = formitems.eq(i).find('.form-control').val().split(" ").slice(1).join(' ');
-                }else if(formitems.eq(i).attr('data-label') == 'phone_mobile' && formitems.eq(i).find('.inptfielsd').val()[0]!='+'){
-                obj[formitems.eq(i).attr('data-label')] = formitems.eq(i).find('.iti__selected-dial-code').text() + formitems.eq(i).find('.form-control').val();
+                    obj['first_name'] = formitems.eq(i).find('.form-data').val().split(" ")[0];
+                    obj['last_name'] = formitems.eq(i).find('.form-data').val().split(" ").slice(1).join(' ');
+                }else if(formitems.eq(i).attr('data-label') == 'phone_mobile'){
+                    var dialCode = formitems.eq(i).find('.iti__active .iti__dial-code').text();
+                    obj[formitems.eq(i).attr('data-label')] = dialCode + formitems.eq(i).find('.form-data').val().replace(/\s/g, '').replace(dialCode, '');
                 }else{
-                obj[formitems.eq(i).attr('data-label')] = formitems.eq(i).find('.form-control').val();
+                    obj[formitems.eq(i).attr('data-label')] = formitems.eq(i).find('.form-data').val();
                 }
             }
             }
