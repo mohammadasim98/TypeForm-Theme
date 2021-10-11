@@ -140,11 +140,13 @@ body{
     background-color: var(--bg-color);
     border: none;
     margin-top: 15px;
-    width: 100%;
     height: 43px;
     font-size: 167%;
     color: var(--text-color);
     display: inline-block;
+}
+.form-input-dropdown .form-element{
+    width: 100%;
 }
 .form-input-dropdown{
     margin-bottom: 24px;
@@ -264,7 +266,7 @@ body{
     margin-bottom: 17px;
     margin-top: 8px;
     overflow: auto;
-    max-height: 50%;
+    max-height: 30%;
 }
 ::-webkit-scrollbar {
     width: 6px;
@@ -551,6 +553,9 @@ body{
     float: right;
     color: var(--text-color) !important;
 }
+.inptfielsd{
+    width: 69%;
+}
 .footer{
     position: absolute;
     bottom: 19px;
@@ -674,6 +679,9 @@ body{
     }
     .form-dropdown-element .form-element-tick{
         width: 3.5%;
+    }
+    .inptfielsd{
+        width: 100%;
     }
 }
 @media screen and (min-width: 2560px){
